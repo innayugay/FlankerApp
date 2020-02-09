@@ -5,19 +5,37 @@ import { StyleSheet, View, TextInput } from 'react-native';
 import { withOrientation } from 'react-navigation';
 import * as firebase from 'firebase';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { subscribeToAuthChanges } from '../../api/auth';
+// import participantStack from '../../routes/participantStack';
 
-export default class ParticipantLogIn extends React.Component {
+  class ParticipantLogIn extends React.Component {
   state = {
     email: '',
     password: ''
   }
 
-  handleLogin = () => {
-    const {email, password} = this.state
-    firebase.auth().signInWithEmailAndPassword(email, password) 
+  componentDidMount() {
   }
 
-  render({navigation}){
+  onAuthStateChanged = (user) => {
+    if (user !== null) {
+      console.log('correct user')
+      // this.props.navigation.navigate
+      // this.props.navigation.push('ParticipantHome')
+    }
+  }
+
+  handleLogin = () => {
+    const {email, password} = this.state
+    firebase.auth().signInWithEmailAndPassword(email, password)
+    .then(
+      subscribeToAuthChanges(this.onAuthStateChanged)
+    )
+    .catch(alert(''))
+  }
+
+
+  render(){
     return (
       <View style={styles.form}>
           <Text style={styles.inputTitle}> Email address</Text>
@@ -36,7 +54,7 @@ export default class ParticipantLogIn extends React.Component {
             <Text> Log In </Text>
           </Button>
           <TouchableOpacity
-            onPress={this.props.navigation.push('ParticipantLogIn')}>
+             onPress = {()=> this.props.navigation.push('ParticipantSignUp')}>
             <Text> New to Flanker App? <Text style = {styles.link}> Sign Up </Text> </Text>
           </TouchableOpacity>
       </View>
@@ -61,8 +79,9 @@ const styles = StyleSheet.create({
     fontSize: 15
   },
   input: {
+    backgroundColor: 'white',
     borderBottomColor: 'black',
-    color: 'white',
+    color: 'black',
     height: 40,
     fontSize: 15,
   },
@@ -70,3 +89,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   }
 })
+
+
+export default ParticipantLogIn;

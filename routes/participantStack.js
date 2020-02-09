@@ -3,15 +3,15 @@
 // import { createAppContainer } from 'react-navigation';
 // import Welcome from '../screens/welcome';
 // import ParticipantLogIn from '../screens/participant/ParticipantLogIn';
-// import ParticipantSignUp from '../screens/participant/ParticipantSignUp';
+// import ParticipantHome from '../screens/participant/ParticipantHome';
 
 
 // const screens = {
 //   ParticipantLogIn,
-//   ParticipantSignUp
+//   ParticipantHome
 // };
 
 // // home stack navigator screens
-// const pAuthStack = createStackNavigator(screens);
+// const participantStack = createStackNavigator(screens);
 
-// export default createAppContainer(pAuthStack);
+// export default createAppContainer(participantStack);

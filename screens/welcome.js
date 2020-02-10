@@ -19,7 +19,7 @@ export default function Welcome({navigation}) {
             <Text style={globalStyles.buttonText} onPress={() => navigation.push('ParticipantLogIn')}> I am a participant</Text> 
           </Button> */}
           <Button style={globalStyles.button}> 
-            <Text style={globalStyles.buttonText} onPress={() => navigation.push('ResearcherLogIn')}>I am a researcher</Text> 
+            <Text style={globalStyles.buttonText} onPress={() => navigation.navigate('ResearcherLogIn')}>I am a researcher</Text> 
           </Button>
           <Button style={globalStyles.button}> 
             <Text style={globalStyles.buttonText} onPress={() => navigation.navigate('ParticipantLogIn')}> I am a participant</Text> 

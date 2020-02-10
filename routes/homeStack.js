@@ -1,31 +1,92 @@
 import { createStackNavigator } from 'react-navigation-stack';
 import React from 'react';
-import { createAppContainer } from 'react-navigation';
+import { createAppContainer, createSwitchNavigator } from 'react-navigation';
 import Welcome from '../screens/welcome';
 import ResearcherLogIn from '../screens/researcher/ResearcherLogIn';
 import ParticipantLogIn from '../screens/participant/ParticipantLogIn';
 import ParticipantSignUp from '../screens/participant/ParticipantSignUp';
 import ResearcherSignUp from '../screens/researcher/ResearcherSignUp';
+import ParticipantHome from '../screens/participant/ParticipantHome';
+import ResearcherHome from '../screens/researcher/ResearcherHome';
 
 
-const screens = {
-  // Welcome: {
-  //   screen: Welcome,
-  // },
-  // ResearcherLogIn: {
-  //   screen: ResearcherLogIn,
-  // },
-  // ParticipantLogIn:{
-  //   screen: ParticipantLogIn
-  // }
-  Welcome,
-  ResearcherLogIn,
-  ParticipantLogIn,
-  ResearcherSignUp,
-  ParticipantSignUp
-};
 
-// home stack navigator screens
-const HomeStack = createStackNavigator(screens);
 
-export default createAppContainer(HomeStack);
+
+// // home stack navigator screens
+// const HomeStack = createStackNavigator(screens);
+
+const HomeStack = createStackNavigator({
+  Welcome: {
+    screen: Welcome,
+    navigationOptions: () => ({
+      headerShown: false
+    })
+  },
+  ResearcherLogIn: {
+    screen: ResearcherLogIn,
+    navigationOptions: () => ({
+      headerShown: false
+    })
+  },
+  ParticipantLogIn:{
+    screen: ParticipantLogIn,
+    navigationOptions: () => ({
+      headerShown: false
+    })
+  },
+  ResearcherSignUp: {
+    screen: ResearcherSignUp,
+    navigationOptions: () => ({
+      headerShown: false
+    })
+  },
+  ParticipantSignUp:{
+    screen: ParticipantSignUp,
+    navigationOptions: () => ({
+      headerShown: false
+    })
+  }
+})
+
+const ParticipantStack = createSwitchNavigator ({
+  MyStudies: {
+    screen: ParticipantHome,
+    navigationOptions: () => ({
+      headerShown: false
+    }),
+  }
+})
+
+const ResearcherStack = createSwitchNavigator ({
+  MyStudies: {
+    screen: ResearcherHome,
+    navigationOptions: () => ({
+      headerShown: false
+    }),
+  }
+})
+
+const AppStack = createStackNavigator({
+  LoginFlow: {
+    screen: HomeStack,
+    navigationOptions: () => ({
+      headerShown: false
+    })
+  },
+  ParticipantFlow: {
+    screen: ParticipantStack,
+    navigationOptions: () => ({
+      headerShown: false
+    })
+  },
+  ResearcherFlow: {
+    screen: ResearcherStack,
+    navigationOptions: () => ({
+      headerShown: false
+    })
+  }
+
+})
+
+export default createAppContainer(AppStack);

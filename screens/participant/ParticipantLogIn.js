@@ -14,14 +14,11 @@ import { subscribeToAuthChanges } from '../../api/auth';
     password: ''
   }
 
-  componentDidMount() {
-  }
-
   onAuthStateChanged = (user) => {
     if (user !== null) {
       console.log('correct user')
       // this.props.navigation.navigate
-      // this.props.navigation.push('ParticipantHome')
+      this.props.navigation.navigate('ParticipantFlow')
     }
   }
 
@@ -31,13 +28,13 @@ import { subscribeToAuthChanges } from '../../api/auth';
     .then(
       subscribeToAuthChanges(this.onAuthStateChanged)
     )
-    .catch(alert(''))
+    .catch()
   }
 
 
   render(){
     return (
-      <View style={styles.form}>
+      <View style={styles.container}>
           <Text style={styles.inputTitle}> Email address</Text>
           <TextInput 
             style= {styles.input}
@@ -64,6 +61,14 @@ import { subscribeToAuthChanges } from '../../api/auth';
 }
 
 const styles = StyleSheet.create({
+  container: {
+    display: 'flex',
+    // flexDirection: 'row',
+    // alignItems: 'center',
+    justifyContent: "center",
+    flex: 1,
+    padding: 100
+  },
   header: {
     display: 'flex',
     flexDirection: 'column',

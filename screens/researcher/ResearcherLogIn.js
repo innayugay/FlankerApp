@@ -3,16 +3,32 @@ import { Text, Button } from 'native-base';
 import { globalStyles } from '../../styles/global'
 import { StyleSheet, View, TextInput } from 'react-native';
 import { TouchableOpacity } from 'react-native-gesture-handler';
+import { subscribeToAuthChanges } from '../../api/auth';
+import * as firebase from 'firebase';
 
 export default class ResearcherLogIn extends React.Component {
   state = {
     email: '',
     password: ''
   }
+  onAuthStateChanged = (user) => {
+    if (user !== null) {
+      console.log('correct user')
+      // this.props.navigation.navigate
+      this.props.navigation.navigate('ResearcherFlow')
+    }
+    else{
+      console.log('something is wrong')
+    }
+  }
 
   handleLogin = () => {
     const {email, password} = this.state
-    firebase.auth().signInWithEmailAndPassword(email, password) 
+    firebase.auth().signInWithEmailAndPassword(email, password)
+    .then(
+      subscribeToAuthChanges(this.onAuthStateChanged)
+    )
+    .catch()
   }
 
   render(){
@@ -30,7 +46,7 @@ export default class ResearcherLogIn extends React.Component {
             secureTextEntry
             onChangeText={password => this.setState({password})}
           ></TextInput>
-          <Button> 
+          <Button onPress={this.handleLogin}> 
             <Text> Log In </Text>
           </Button>
           <TouchableOpacity

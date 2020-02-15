@@ -4,19 +4,31 @@ import { globalStyles } from '../../styles/global'
 import { StyleSheet, View, Modal } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
 import * as firebase from 'firebase';
+import { Formik } from 'formik';
 
 export default function ResearcherHome ({navigation}) {
 
+
     const [modalOpen, setModalOpen] = useState(false)
 
-    const addStudy = () => {
+
+    function addStudy(values) {
+        var uid = firebase.auth().currentUser.uid
+        // console.log(values)
         var db = firebase.firestore()
-        return db.collection('studies').doc().set({
-            
+        db.collection('studies').add({
+            researcher: uid,
+            title: values.title,
+            aims: values.aims,
+            description: values.description
         })
-
+        .then ( function(docRef) {
+            // console.log(docRef.id)
+                db.collection('researchers').doc(uid).update({
+                studies: firebase.firestore.FieldValue.arrayUnion(docRef.id)
+            })
+        })
     }
-
     return (
         <View style={styles.container}>
             <View style={styles.header}> 
@@ -25,32 +37,39 @@ export default function ResearcherHome ({navigation}) {
             <View style={styles.container}>
                 <Modal visible={modalOpen} animationType='slide' transparent={true}>
                     <View style={styles.modal}>
-                        <Text style={globalStyles.darkText}> Add a new study here</Text>
-                        <Text style={styles.inputTitle}> Title </Text>
-                        <TextInput 
-                            style= {styles.input}
-                            // onChangeText = {}
-                            // value={}
-                        ></TextInput>
-                        <Text style={styles.inputTitle}> Aims </Text>
-                        <TextInput 
-                            style= {styles.input}
-                            // onChangeText = {}
-                            // value={}
-                        ></TextInput>
-                        <Text style={styles.inputTitle}> Desirable participant characteristics </Text>
-                        <TextInput 
-                            style= {styles.input}
-                            // onChangeText = {}
-                            // value={}
-                        ></TextInput>
-                        <Text style={styles.inputTitle}>Description</Text>
-                        <TextInput 
-                            style= {styles.input}
-                            // onChangeText = {}
-                            // value={}
-                        ></TextInput>
-
+                        <Text style={globalStyles.darkText}> Add a new study here (researcher)</Text>
+                        <Formik
+                            initialValues={{title:'', aims:'', description:''}}
+                            onSubmit={(values) => {
+                                addStudy(values)
+                            }}
+                        >
+                        {(formikProps)=>(
+                            <View>
+                                <TextInput 
+                                    style= {styles.input}
+                                    placeholder='Title'
+                                    onChangeText={formikProps.handleChange('title')}
+                                    value={formikProps.values.title}
+                                ></TextInput>
+                                <TextInput 
+                                    style= {styles.input}
+                                    placeholder='Aims'
+                                    onChangeText={formikProps.handleChange('aims')}
+                                    value={formikProps.values.aims}
+                                ></TextInput>
+                                <TextInput 
+                                    style= {styles.input}
+                                    placeholder='Description'
+                                    onChangeText={formikProps.handleChange('description')}
+                                    value={formikProps.values.description}
+                                ></TextInput>
+                                <Button style={globalStyles.button} title='Submit' onPress={formikProps.handleSubmit}>
+                                    <Text> Add Study</Text>
+                                </Button>
+                            </View>
+                        )}
+                        </Formik>
                         <Button onPress={addStudy}>
                             <Text> Add Study </Text>
                         </Button>
@@ -70,6 +89,7 @@ export default function ResearcherHome ({navigation}) {
         </View>
 
     );
+
     
 }
 
@@ -90,13 +110,13 @@ const styles = StyleSheet.create({
       padding: 5
     },
     modal: {
-        backgroundColor: 'pink',
+        backgroundColor: '#b1d9e7',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
         width: 300,
         height: 450,
-        padding: 50,
+        padding: 30,
         borderRadius: 10,
         marginTop: 100,
         marginLeft: 60
@@ -107,6 +127,7 @@ const styles = StyleSheet.create({
         color: 'black',
         height: 40,
         fontSize: 15,
+        margin: 10
     },
     roundButton: {
         width: 45,

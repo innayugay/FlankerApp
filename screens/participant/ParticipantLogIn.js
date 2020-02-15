@@ -33,6 +33,7 @@ import { subscribeToAuthChanges } from '../../api/auth';
 
 
   render(){
+    
     return (
       <View style={styles.container}>
           <Text style={styles.inputTitle}> Email address</Text>
@@ -55,7 +56,6 @@ import { subscribeToAuthChanges } from '../../api/auth';
             <Text> New to Flanker App? <Text style = {styles.link}> Sign Up </Text> </Text>
           </TouchableOpacity>
       </View>
-
     )
   }
 }

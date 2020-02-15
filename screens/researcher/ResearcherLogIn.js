@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     padding: 5
   },
   form: {
-    marginBottom: 48,
+    marginTop: 48,
     marginHorizontal: 30
   },
   inputTitle: {

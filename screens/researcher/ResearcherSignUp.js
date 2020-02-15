@@ -18,7 +18,8 @@ export default class ParticipantSignUp extends React.Component {
       .then(userCredentials => {
           console.log('user created')
           return db.collection('researchers').doc(userCredentials.user.uid).set({
-              email: this.state.email
+              email: this.state.email,
+              type: 'resercher'
           })
       })
   }

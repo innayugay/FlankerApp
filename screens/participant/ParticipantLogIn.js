@@ -8,16 +8,31 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { subscribeToAuthChanges } from '../../api/auth';
 // import participantStack from '../../routes/participantStack';
 
-  class ParticipantLogIn extends React.Component {
-  state = {
-    email: '',
-    password: ''
-  }
+  export default function ParticipantLogIn() {
+
+  [email, setEmail] = useState('')
+  [password, setPassword] = useState('')
+  // [noStudiesToShow, setStudiesToShow] = useState(true)
 
   onAuthStateChanged = (user) => {
     if (user !== null) {
       console.log('correct user')
-      // this.props.navigation.navigate
+      // check if the user has studies and pass them to the next screen
+        // firebase.firestore().collection('researchers').doc(firebase.auth().currentUser.uid).get()
+        // .then( function(doc) {
+        //     if(doc.data().studies){
+        //         console.log('this user has studies', doc.data().studies)
+        //         setStudiesToShow(false)
+
+        //         // setStudies(doc.data().studies)
+        //         // studies.push(doc.data().studies)
+        //         console.log(studies)
+        //     }
+        //     else{
+        //         console.log('this user doenst have studies')
+        //     }
+        // }
+        // )
       this.props.navigation.navigate('ParticipantFlow')
     }
   }
@@ -32,7 +47,7 @@ import { subscribeToAuthChanges } from '../../api/auth';
   }
 
 
-  render(){
+ 
     
     return (
       <View style={styles.container}>
@@ -57,7 +72,7 @@ import { subscribeToAuthChanges } from '../../api/auth';
           </TouchableOpacity>
       </View>
     )
-  }
+  
 }
 
 const styles = StyleSheet.create({
@@ -96,4 +111,3 @@ const styles = StyleSheet.create({
 })
 
 
-export default ParticipantLogIn;

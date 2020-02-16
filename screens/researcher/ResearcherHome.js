@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Text, Button, Container } from 'native-base';
+import React, { useState, useEffect } from 'react';
+import { Text, Button, Container, Card, CardItem } from 'native-base';
 import { globalStyles } from '../../styles/global'
 import { StyleSheet, View, Modal } from 'react-native';
 import { TextInput } from 'react-native-gesture-handler';
@@ -10,7 +10,9 @@ export default function ResearcherHome ({navigation}) {
 
 
     const [modalOpen, setModalOpen] = useState(false)
-
+    const [noStudiesToShow, setStudiesToShow] = useState(true)
+    const [studies, setStudies] = useState([])
+    // var noStudiesToShow = false
 
     function addStudy(values) {
         var uid = firebase.auth().currentUser.uid
@@ -29,11 +31,53 @@ export default function ResearcherHome ({navigation}) {
             })
         })
     }
+
+
+    useEffect(() => {
+        var db = firebase.firestore()
+        db.collection('researchers').doc(firebase.auth().currentUser.uid).get()
+        .then( function(doc) {
+            if(doc.data().studies){
+                // console.log('this user has studies', doc.data().studies)
+                
+                setStudiesToShow(false)
+                for (i=0; i<doc.data().studies.length; i++){
+                    // console.log(doc.data().studies[0])
+                    db.collection('studies').doc(doc.data().studies[i]).get()
+                    .then(function(newDoc){
+                        // console.log(newDoc.data())
+                        setStudies(studies =>[...studies, newDoc.data()])
+                    })
+                }
+            }
+            else{
+                console.log('this user doenst have studies')
+            }
+        }
+        )
+        // console.log(noStudiesToShow)
+        // console.log('studies are', studies)
+    })
+    
+    // console.log(studies)
+    const noStudies = <Text style={globalStyles.lightText}> You don't have any studies yet. </Text>
+    const displayStudies = 
+        <View>
+            <Card style={styles.containerRow}>
+            <CardItem><Text>{studies[0].title}</Text></CardItem>
+                <Button><Text>View details</Text></Button>
+            </Card>
+            <CardItem><Text>One study</Text></CardItem>
+        </View>
+    
+    
     return (
         <View style={styles.container}>
             <View style={styles.header}> 
                 <Text style={globalStyles.headerText}> My Studies </Text>
             </View>
+
+            {/* popup window */}
             <View style={styles.container}>
                 <Modal visible={modalOpen} animationType='slide' transparent={true}>
                     <View style={styles.modal}>
@@ -70,18 +114,18 @@ export default function ResearcherHome ({navigation}) {
                             </View>
                         )}
                         </Formik>
-                        <Button onPress={addStudy}>
-                            <Text> Add Study </Text>
-                        </Button>
-
                         <Button onPress={()=> setModalOpen(false)}>
                             <Text> X </Text>
                         </Button>
                     </View>
                 </Modal>
             </View>
+            {/* popup window */}
+
             <View>
-                <Text style={globalStyles.lightText}> You don't have any studies yet. </Text>
+                {noStudiesToShow? noStudies: displayStudies}
+            
+                {/* <Text style={globalStyles.lightText}> You don't have any studies yet. </Text> */}
                 <Button style={styles.roundButton} onPress={()=> setModalOpen(true)}>
                     <Text> + </Text>
                 </Button>
@@ -100,6 +144,10 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: "center",
         // flex: 1,
+    },
+    containerRow:{
+        display:'flex',
+        flexDirection: 'row'
     },
     header: {
       marginTop: 80,

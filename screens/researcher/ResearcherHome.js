@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Text, Button, Container, Card, CardItem } from 'native-base';
 import { globalStyles } from '../../styles/global'
-import { StyleSheet, View, Modal } from 'react-native';
-import { TextInput } from 'react-native-gesture-handler';
+import { StyleSheet, View, Modal, TouchableOpacity } from 'react-native';
+import { TextInput, FlatList } from 'react-native-gesture-handler';
 import * as firebase from 'firebase';
 import { Formik } from 'formik';
 
@@ -38,15 +38,20 @@ export default function ResearcherHome ({navigation}) {
         db.collection('researchers').doc(firebase.auth().currentUser.uid).get()
         .then( function(doc) {
             if(doc.data().studies){
-                // console.log('this user has studies', doc.data().studies)
+                console.log('this user has studies', doc.data().studies)
                 
                 setStudiesToShow(false)
-                for (i=0; i<doc.data().studies.length; i++){
+                for (var i=0; i < doc.data().studies.length; i++){
                     // console.log(doc.data().studies[0])
                     db.collection('studies').doc(doc.data().studies[i]).get()
                     .then(function(newDoc){
                         // console.log(newDoc.data())
-                        setStudies(studies =>[...studies, newDoc.data()])
+                        if(studies.indexOf(newDoc.data()) === -1){
+                            setStudies(studies =>[...studies, newDoc.data()])
+                        }
+                        else{
+                            console.log('oops duplicating!')
+                        }
                     })
                 }
             }
@@ -57,22 +62,26 @@ export default function ResearcherHome ({navigation}) {
         )
         // console.log(noStudiesToShow)
         // console.log('studies are', studies)
-    })
+    },[])
     
-    // console.log(studies)
-    const noStudies = <Text style={globalStyles.lightText}> You don't have any studies yet. </Text>
+    console.log(noStudiesToShow, '???')
+    const noStudies = 
+    <Text style={globalStyles.lightText}> You don't have any studies yet. </Text>
     const displayStudies = 
-        <View>
-            <Card style={styles.containerRow}>
-            <CardItem><Text>{studies[0].title}</Text></CardItem>
-                <Button><Text>View details</Text></Button>
-            </Card>
-            <CardItem><Text>One study</Text></CardItem>
-        </View>
+            <FlatList data={studies} renderItem={({ item }) => (
+                <Card style={styles.containerRow}>
+                    <CardItem>
+                        <Text style={globalStyles.titleText}>{ item.title }</Text>
+                    </CardItem>
+                    <TouchableOpacity onPress={ ()=> navigation.navigate('StudyDetails', item)}>
+                        <Text>View details</Text>
+                    </TouchableOpacity>
+                </Card>
+              )} />
     
     
     return (
-        <View style={styles.container}>
+        <View>
             <View style={styles.header}> 
                 <Text style={globalStyles.headerText}> My Studies </Text>
             </View>
@@ -122,7 +131,7 @@ export default function ResearcherHome ({navigation}) {
             </View>
             {/* popup window */}
 
-            <View>
+            <View style={styles.padding}>
                 {noStudiesToShow? noStudies: displayStudies}
             
                 {/* <Text style={globalStyles.lightText}> You don't have any studies yet. </Text> */}
@@ -143,15 +152,18 @@ const styles = StyleSheet.create({
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: "center",
-        // flex: 1,
+        flex: 1,
     },
     containerRow:{
-        display:'flex',
-        flexDirection: 'row'
+        // display:'flex',
+        // marginTop: 20,
+        flexDirection: 'row',
+        justifyContent:'space-between',
+        // height: 10
     },
     header: {
       marginTop: 80,
-      display: 'flex',
+    //   display: 'flex',
       flexDirection: 'row',
       alignItems: 'center',
     //   justifyContent: 'flex-start',
@@ -183,5 +195,8 @@ const styles = StyleSheet.create({
     },
     sheet: {
         height: 200
+    },
+    body: {
+        padding: 10
     }
 })

@@ -8,7 +8,7 @@ import ParticipantSignUp from '../screens/participant/ParticipantSignUp';
 import ResearcherSignUp from '../screens/researcher/ResearcherSignUp';
 import ParticipantHome from '../screens/participant/ParticipantHome';
 import ResearcherHome from '../screens/researcher/ResearcherHome';
-
+import ResearcherStudyDetails from '../screens/researcher/ResearcherStudyDetails';
 
 
 
@@ -64,6 +64,12 @@ const ResearcherStack = createSwitchNavigator ({
     navigationOptions: () => ({
       headerShown: false
     }),
+  },
+  StudyDetails: {
+    screen: ResearcherStudyDetails,
+    navigationOptions: () => ({
+      headerShown: true
+    })
   }
 })
 

@@ -82,12 +82,12 @@ export default function ResearcherHome ({navigation}) {
     
     return (
         <View>
-            <View style={styles.header}> 
+            <View style={globalStyles.header}> 
                 <Text style={globalStyles.headerText}> My Studies </Text>
             </View>
 
             {/* popup window */}
-            <View style={styles.container}>
+            <View style={globalStyles.container}>
                 <Modal visible={modalOpen} animationType='slide' transparent={true}>
                     <View style={styles.modal}>
                         <Text style={globalStyles.darkText}> Add a new study here (researcher)</Text>
@@ -147,27 +147,12 @@ export default function ResearcherHome ({navigation}) {
 }
 
 const styles = StyleSheet.create({
-    container: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: "center",
-        flex: 1,
-    },
     containerRow:{
         // display:'flex',
         // marginTop: 20,
         flexDirection: 'row',
         justifyContent:'space-between',
         // height: 10
-    },
-    header: {
-      marginTop: 80,
-    //   display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center',
-    //   justifyContent: 'flex-start',
-      padding: 5
     },
     modal: {
         backgroundColor: '#b1d9e7',

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { Text, Button } from 'native-base';
 import { globalStyles } from '../../styles/global'
 import { StyleSheet, View, TextInput } from 'react-native';
@@ -8,31 +8,18 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { subscribeToAuthChanges } from '../../api/auth';
 // import participantStack from '../../routes/participantStack';
 
-  export default function ParticipantLogIn() {
+  export default class ParticipantLogIn extends React.Component {
 
-  [email, setEmail] = useState('')
-  [password, setPassword] = useState('')
-  // [noStudiesToShow, setStudiesToShow] = useState(true)
+  // [email, setEmail] = useState('')
+  // [password, setPassword] = useState('')
+    state={
+      email: '',
+      password: ''
+    }
 
   onAuthStateChanged = (user) => {
     if (user !== null) {
       console.log('correct user')
-      // check if the user has studies and pass them to the next screen
-        // firebase.firestore().collection('researchers').doc(firebase.auth().currentUser.uid).get()
-        // .then( function(doc) {
-        //     if(doc.data().studies){
-        //         console.log('this user has studies', doc.data().studies)
-        //         setStudiesToShow(false)
-
-        //         // setStudies(doc.data().studies)
-        //         // studies.push(doc.data().studies)
-        //         console.log(studies)
-        //     }
-        //     else{
-        //         console.log('this user doenst have studies')
-        //     }
-        // }
-        // )
       this.props.navigation.navigate('ParticipantFlow')
     }
   }
@@ -48,7 +35,7 @@ import { subscribeToAuthChanges } from '../../api/auth';
 
 
  
-    
+    render(){
     return (
       <View style={styles.container}>
           <Text style={styles.inputTitle}> Email address</Text>
@@ -72,7 +59,7 @@ import { subscribeToAuthChanges } from '../../api/auth';
           </TouchableOpacity>
       </View>
     )
-  
+  }
 }
 
 const styles = StyleSheet.create({

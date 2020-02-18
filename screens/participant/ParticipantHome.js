@@ -1,30 +1,122 @@
-import React, { useState } from 'react';
-import { Text, Button } from 'native-base';
+import React, { useState, useEffect } from 'react';
+import { Text, Button, Container, Card, CardItem } from 'native-base';
 import { globalStyles } from '../../styles/global'
-import { StyleSheet, View, Modal } from 'react-native';
+import { StyleSheet, View, Modal, TouchableOpacity } from 'react-native';
+import { TextInput, FlatList } from 'react-native-gesture-handler';
+import * as firebase from 'firebase';
+import { Formik } from 'formik';
 
 export default function ParticipantHome ({navigation}) {
 
-    const [modalOpen, setModalOpen] = useState(false)
 
+    const [modalOpen, setModalOpen] = useState(false)
+    const [noStudiesToShow, setStudiesToShow] = useState(true)
+    const [studies, setStudies] = useState([])
+    // var noStudiesToShow = false
+
+    function addStudy(values) {
+        var uid = firebase.auth().currentUser.uid
+        console.log(values)
+        var db = firebase.firestore()
+        db.collection('participants').doc(uid).update({
+            studies: firebase.firestore.FieldValue.arrayUnion(values.studyID)
+        })
+        // db.collection('participants').doc(uid).set({
+        //     studyID: values.studyID
+        // })
+        // .then(
+        //     console.log('study added successfully')
+        // )
+    }
+
+
+    useEffect(() => {
+        var db = firebase.firestore()
+        db.collection('participants').doc(firebase.auth().currentUser.uid).get()
+        .then(function (theDoc){
+            if (theDoc.data().studies){
+                console.log('this user has studies', theDoc.data().studies)    
+                setStudiesToShow(false)
+                for (var i=0; i < theDoc.data().studies.length; i++){
+                    // console.log(theDoc.data().studies[0])
+                    db.collection('studies').doc(theDoc.data().studies[i]).get()
+                    .then(function(newDoc){
+                        // console.log(newDoc.data())
+                        if(studies.indexOf(newDoc.data()) === -1){
+                            setStudies(studies =>[...studies, newDoc.data()])
+                        }
+                        else{
+                            console.log('oops duplicating!')
+                        }
+                    })
+                }
+
+            }
+        })
+
+        // console.log(noStudiesToShow)
+        // console.log('studies are', studies)
+    },[])
+    
+    console.log(noStudiesToShow, '???')
+    const noStudies = 
+    <Text style={globalStyles.lightText}> You are not participating in any study yet. </Text>
+    const displayStudies = 
+            <FlatList data={studies} renderItem={({ item }) => (
+                <Card style={styles.containerRow}>
+                    <CardItem>
+                        <Text style={globalStyles.titleText}>{ item.title }</Text>
+                    </CardItem>
+                    <TouchableOpacity onPress={ ()=> navigation.navigate('StudyDetails', item)}>
+                        <Text styles={globalStyles.buttonText}>View details</Text>
+                    </TouchableOpacity>
+                </Card>
+              )} />
+    
+    
     return (
-        <View style={styles.container}>
-            <Modal visible={modalOpen} animationType='' presentationStyle='formSheet'>
-                <View style={styles.modal}>
-                    <Text style={globalStyles.darkText}> This is a modal</Text>
-                    <Text style={globalStyles.darkText}> This is a modal</Text>
-                    <Text style={globalStyles.darkText}> This is a modal</Text>
-                    <Text style={globalStyles.darkText}> This is a modal</Text>
-                    <Button style={styles.roundButton} onPress={()=> setModalOpen(false)}>
-                        <Text> x </Text>
-                    </Button>
-                </View>
-            </Modal>
-            <View style={styles.header}> 
+        <View>
+            <View style={globalStyles.header}> 
                 <Text style={globalStyles.headerText}> My Studies </Text>
             </View>
-            <View style={styles.body}>
-                <Text style={globalStyles.lightText}> You are not registered in any study yet. </Text>
+
+            {/* popup window */}
+            <View style={globalStyles.container}>
+                <Modal visible={modalOpen} animationType='slide' transparent={true}>
+                    <View style={styles.modal}>
+                        <Text style={globalStyles.darkText}> Add a new study here (participant)</Text>
+                        <Formik
+                            initialValues={{studyID:''}}
+                            onSubmit={(values) => {
+                                addStudy(values)
+                            }}
+                        >
+                        {(formikProps)=>(
+                            <View>
+                                <TextInput 
+                                    style= {styles.input}
+                                    placeholder='Study ID'
+                                    onChangeText={formikProps.handleChange('studyID')}
+                                    value={formikProps.values.studyID}
+                                ></TextInput>
+                                <Button style={globalStyles.button} title='Submit' onPress={formikProps.handleSubmit}>
+                                    <Text> Add Study</Text>
+                                </Button>
+                            </View>
+                        )}
+                        </Formik>
+                        <Button onPress={()=> setModalOpen(false)}>
+                            <Text> X </Text>
+                        </Button>
+                    </View>
+                </Modal>
+            </View>
+            {/* popup window */}
+
+            <View style={styles.padding}>
+                {noStudiesToShow? noStudies: displayStudies}
+            
+                {/* <Text style={globalStyles.lightText}> You don't have any studies yet. </Text> */}
                 <Button style={styles.roundButton} onPress={()=> setModalOpen(true)}>
                     <Text> + </Text>
                 </Button>
@@ -32,35 +124,46 @@ export default function ParticipantHome ({navigation}) {
         </View>
 
     );
+
     
 }
 
 const styles = StyleSheet.create({
-    container: {
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center'
-        // // justifyContent: "center",
-        // flex: 1,
-        // margin: 100
-    },
-    header: {
-      marginTop: 80,
-      display: 'flex',
-      flexDirection: 'row',
-      alignItems: 'center',
-    //   justifyContent: 'flex-start',
-      padding: 5
+    containerRow:{
+        // display:'flex',
+        // marginTop: 20,
+        flexDirection: 'row',
+        justifyContent:'space-between',
+        // height: 10
     },
     modal: {
-        backgroundColor: 'pink',
+        backgroundColor: '#b1d9e7',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        width: 300
+        width: 300,
+        height: 450,
+        padding: 30,
+        borderRadius: 10,
+        marginTop: 100,
+        marginLeft: 60
+    },
+    input: {
+        backgroundColor: 'white',
+        borderBottomColor: 'black',
+        color: 'black',
+        height: 40,
+        fontSize: 15,
+        margin: 10
     },
     roundButton: {
         width: 45,
         borderRadius: 30
+    },
+    sheet: {
+        height: 200
+    },
+    body: {
+        padding: 10
     }
 })

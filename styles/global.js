@@ -8,6 +8,21 @@ export const globalStyles = StyleSheet.create({
         justifyContent: "center",
         flex: 1,
     },
+    containerTop: {
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        // justifyContent: "center",
+        flex: 1,
+    },
+    header: {
+        marginTop: 80,
+      //   display: 'flex',
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'center',
+        padding: 5
+    },
     headerText:{
         fontSize: 20,
         color: '#17547d'
@@ -23,7 +38,8 @@ export const globalStyles = StyleSheet.create({
 
     button: {
         backgroundColor:'#27bbd9',
-        margin: 7
+        margin: 7,
+        // maxWidth: 150
     },
     buttonText: {
         color: 'white',

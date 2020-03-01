@@ -9,18 +9,27 @@ import * as firebase from 'firebase';
 export default function ResearcherStudyDetails({navigation}){
 
 
-    function addEntry() {
+    const addEntry = () => {
         var db = firebase.firestore()
         var uid = firebase.auth().currentUser.uid
-        db.collection('studies').
-            db.collection('participants').doc(uid).collection('entries').set({
-                numberCorrect: 0,
-                answers: ''
-            })
-            .then( 
-                navigation.navigate()
-            )
+        
+        // db.collection('participants').doc(uid).collection('entries').set({
+        //     studyID: navigation.getParam('studyID'),
+        //     numberCorrect: 0,
+        //     answers: [],
+        // })
+        // .then( 
+        //     navigation.navigate('Instructions')
+        // )
 
+        db.collection('participants').doc(uid).collection('entries').add({
+            studyID: navigation.getParam('studyID')
+        })
+        .then(
+            navigation.navigate('Instructions')
+        )
+
+        
     }
             // .then( function(subcollection) {
             // if(subcollection.docs.length > 0){
@@ -35,7 +44,7 @@ export default function ResearcherStudyDetails({navigation}){
             //             setStudies(studies => [...studies, newDoc.data()])
             //         })
             //     }
-
+    console.log('navigation get param', navigation)
     return (
     <View style={globalStyles.containerTop}>
         <View style={globalStyles.header}> 
@@ -63,7 +72,7 @@ export default function ResearcherStudyDetails({navigation}){
                 <Text style={globalStyles.darkText}>Note: you can only take the test once. </Text>
             </View>
         </View>
-        <Button style={globalStyles.button}>
+        <Button style={globalStyles.button} onPress={addEntry}>
             <Text style={globalStyles.buttonText}> Start the test </Text>
         </Button>
     </View>

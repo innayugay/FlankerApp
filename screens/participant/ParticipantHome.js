@@ -44,6 +44,7 @@ export default function ParticipantHome ({navigation}) {
                         // console.log(newDoc.data())
                         if(studies.indexOf(newDoc.data()) === -1){
                             setStudies(studies =>[...studies, newDoc.data()])
+                            .then(console.log('studies are', studies))
                         }
                         else{
                             console.log('oops duplicating!')
@@ -65,13 +66,14 @@ export default function ParticipantHome ({navigation}) {
             <FlatList data={studies} renderItem={({ item }) => (
                 <Card style={styles.containerRow}>
                     <CardItem>
+                        <Text style={globalStyles.titleText}></Text>
                         <Text style={globalStyles.titleText}>{ item.title }</Text>
                     </CardItem>
                     <TouchableOpacity onPress={ ()=> navigation.navigate('StudyDetails', item)}>
                         <Text styles={globalStyles.buttonText}>View details</Text>
                     </TouchableOpacity>
                 </Card>
-              )} />
+            )}/>
     
     
     return (

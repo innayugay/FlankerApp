@@ -19,15 +19,23 @@ export default function ResearcherHome ({navigation}) {
         // console.log(values)
         var db = firebase.firestore()
         db.collection('studies').add({
-            researcher: uid,
-            title: values.title,
-            aims: values.aims,
-            description: values.description
+            researcher: '',
+            title: '',
+            aims: '',
+            description: '',
+            studyID:''
         })
         .then ( function(docRef) {
-            // console.log(docRef.id)
-                db.collection('researchers').doc(uid).update({
-                studies: firebase.firestore.FieldValue.arrayUnion(docRef.id)
+            console.log(docRef.id, 'this is docref id!!!')
+            // db.collection('researchers').doc(uid).update({
+            //     studies: firebase.firestore.FieldValue.arrayUnion(docRef.id)
+            // })
+            db.collection('studies').doc(docRef.id).set({
+                researcher: uid,
+                title: values.title,
+                aims: values.aims,
+                description: values.description,
+                studyID: docRef.id
             })
         })
     }
@@ -45,9 +53,9 @@ export default function ResearcherHome ({navigation}) {
                     // console.log(doc.data().studies[0])
                     db.collection('studies').doc(doc.data().studies[i]).get()
                     .then(function(newDoc){
-                        // console.log(newDoc.data())
+                        console.log(...studies, 'studiessss')
                         if(studies.indexOf(newDoc.data()) === -1){
-                            setStudies(studies =>[...studies, newDoc.data()])
+                            setStudies(...studies =>[...studies, newDoc.data()])
                         }
                         else{
                             console.log('oops duplicating!')
@@ -66,7 +74,8 @@ export default function ResearcherHome ({navigation}) {
     
     console.log(noStudiesToShow, '???')
     const noStudies = 
-    <Text style={globalStyles.lightText}> You don't have any studies yet. </Text>
+        <Text style={globalStyles.lightText}> You don't have any studies yet. </Text>
+
     const displayStudies = 
             <FlatList data={studies} renderItem={({ item }) => (
                 <Card style={styles.containerRow}>

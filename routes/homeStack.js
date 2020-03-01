@@ -10,6 +10,7 @@ import ParticipantHome from '../screens/participant/ParticipantHome';
 import ResearcherHome from '../screens/researcher/ResearcherHome';
 import ResearcherStudyDetails from '../screens/researcher/ResearcherStudyDetails';
 import ParticipantStudyDetails from '../screens/participant/ParticipantStudyDetails';
+import Instructions from '../screens/participant/Instructions';
 
 
 
@@ -63,6 +64,13 @@ const ParticipantStack = createSwitchNavigator ({
     navigationOptions: () => ({
       headerShown: false
     })
+  },
+  Instructions:{
+    screen: Instructions,
+    navigationOptions: ()=> ({
+      headerShown: false
+    })
+
   }
 })
 

@@ -21,6 +21,11 @@ export default function ParticipantHome ({navigation}) {
         db.collection('participants').doc(uid).update({
             studies: firebase.firestore.FieldValue.arrayUnion(values.studyID)
         })
+        .then(
+            db.collection('studies').doc(values.studyID).update({
+                participants: firebase.firestore.FieldValue.arrayUnion(uid)
+            })
+        )
         // db.collection('participants').doc(uid).set({
         //     studyID: values.studyID
         // })

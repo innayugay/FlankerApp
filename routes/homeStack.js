@@ -11,6 +11,7 @@ import ResearcherHome from '../screens/researcher/ResearcherHome';
 import ResearcherStudyDetails from '../screens/researcher/ResearcherStudyDetails';
 import ParticipantStudyDetails from '../screens/participant/ParticipantStudyDetails';
 import Instructions from '../screens/participant/Instructions';
+import FlankerTask from '../screens/participant/FlankerTask';
 
 
 
@@ -70,7 +71,9 @@ const ParticipantStack = createSwitchNavigator ({
     navigationOptions: ()=> ({
       headerShown: false
     })
-
+  },
+  FlankerTask: {
+    screen: FlankerTask
   }
 })
 

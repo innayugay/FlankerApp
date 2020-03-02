@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text, Button } from 'native-base';
 import { globalStyles } from '../../styles/global';
@@ -7,7 +7,35 @@ import Swiper from 'react-native-swiper';
 
 
 export default function Instructions ({navigation}){
+    const [arrs, setArrows] = useState([])
+    
+    useEffect(()=> {
+        var arrowsArr = []
+        var db = firebase.firestore()
+        db.collection('arrows').get()
+        .then(function(theArrows){
+            theArrows.forEach((oneSet)=>{
+                // arrowsArr.push(oneSet.data())
+                setArrows(arrs => [...arrs, oneSet.data()])
+                // console.log(arrs, '=-=-=-=-')
+            })
+        })
+    },[])
 
+    const addEntry = () => {
+       console.log(navigation.getParam('studyID'))
+        var db = firebase.firestore()
+        var uid = firebase.auth().currentUser.uid
+    
+        db.collection('participants').doc(uid).collection('entries').add({
+            studyID: navigation.getParam('studyID')
+        })
+        .then(
+            navigation.navigate('FlankerTask', {arrs:arrs})
+        )
+
+        
+    }
 
     return(
 
@@ -31,9 +59,9 @@ export default function Instructions ({navigation}){
                 {/*  */}
                 <Text style={styles.text}> Hold your phone with both hands and press either left or right button in response to the direction of your target arrow </Text>
             </View>
-            <View  style={styles.container}>
+            <View style={styles.container}>
                 <Text style={styles.text}> Your goal is to do it as quickly and accurately as you can! Now, press START when you are ready.</Text>
-                <Button style={globalStyles.button}> 
+                <Button style={globalStyles.button} onPress={addEntry}> 
                     <Text> START </Text>
                 </Button>
             </View>

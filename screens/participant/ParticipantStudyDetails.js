@@ -9,41 +9,18 @@ import * as firebase from 'firebase';
 export default function ResearcherStudyDetails({navigation}){
 
 
-    const addEntry = () => {
-        var db = firebase.firestore()
-        var uid = firebase.auth().currentUser.uid
-        
-        // db.collection('participants').doc(uid).collection('entries').set({
-        //     studyID: navigation.getParam('studyID'),
-        //     numberCorrect: 0,
-        //     answers: [],
-        // })
-        // .then( 
-        //     navigation.navigate('Instructions')
-        // )
-
-        db.collection('participants').doc(uid).collection('entries').add({
-            studyID: navigation.getParam('studyID')
-        })
-        .then(
-            navigation.navigate('Instructions')
-        )
-
-        
-    }
-            // .then( function(subcollection) {
-            // if(subcollection.docs.length > 0){
-            //     console.log('the participant has some entries')
-            //     setStudiesToShow(false)
-
-                
-            //     for (var i=0; i < subcollection.docs.length; i++){
-            //         console.log('=-=-=-=', subcollection.docs[i].data().studyID, '=-=-=-=-=')
-            //         db.collection('studies').doc(subcollection.docs[i].studyID).get()
-            //         .then(function(newDoc){
-            //             setStudies(studies => [...studies, newDoc.data()])
-            //         })
-            //     }
+    // const addEntry = () => {
+    //     var db = firebase.firestore()
+    //     var uid = firebase.auth().currentUser.uid
+    
+    //     db.collection('participants').doc(uid).collection('entries').add({
+    //         studyID: navigation.getParam('studyID')
+    //     })
+    //     .then(
+    //         navigation.navigate('Instructions')
+    //     )
+    // }
+    var currentStudyID = navigation.getParam('studyID')
     console.log('navigation get param', navigation)
     return (
     <View style={globalStyles.containerTop}>
@@ -53,7 +30,7 @@ export default function ResearcherStudyDetails({navigation}){
         <View style={styles.properties}>
             <View style={{flexDirection: 'row'}}>
                 <Text style={globalStyles.lightText}> Study ID: </Text>
-                <Text style={globalStyles.darkText}> {navigation.getParam('studyID')}</Text>
+                <Text style={globalStyles.darkText}> {currentStudyID}</Text>
             </View>
             <View style={{flexDirection: 'row'}}>
                 <Text style={globalStyles.lightText}> Aims: </Text>
@@ -72,7 +49,7 @@ export default function ResearcherStudyDetails({navigation}){
                 <Text style={globalStyles.darkText}>Note: you can only take the test once. </Text>
             </View>
         </View>
-        <Button style={globalStyles.button} onPress={addEntry}>
+        <Button style={globalStyles.button} onPress={ ()=> {navigation.navigate('Instructions', {studyID: currentStudyID}) } }>
             <Text style={globalStyles.buttonText}> Start the test </Text>
         </Button>
     </View>

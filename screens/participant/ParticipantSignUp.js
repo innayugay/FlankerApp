@@ -18,9 +18,10 @@ export default class ParticipantSignUp extends React.Component {
       firebase.auth().createUserWithEmailAndPassword(this.state.email, this.state.password)
       .then(userCredentials => {
           console.log('user created')
-          return db.collection('participants').doc(userCredentials.user.uid).set({
+          db.collection('participants').doc(userCredentials.user.uid).set({
               email: this.state.email
           })
+          this.props.navigation.navigate('ParticipantLogIn')
       })
   }
 

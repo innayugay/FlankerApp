@@ -25,7 +25,9 @@ export const globalStyles = StyleSheet.create({
     },
     headerText:{
         fontSize: 20,
-        color: '#17547d'
+        color: '#17547d',
+        textAlign: "center",
+        width: 300
     },
 
     lightText: {

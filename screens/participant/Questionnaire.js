@@ -17,6 +17,8 @@ export default function Questionnaire ({navigation}) {
             <View style={styles.infoBox}>
                 <Text style={styles.infoBoxText}>The information asked is crucial for the research, however all your data will be fully anonymised</Text>
             </View>
+            <Text>{navigation.getParam('congruentRT')} is congruent RT</Text>
+            <Text>{navigation.getParam('incongruentRT')} is incongruent RT</Text>
         </View>
     )
 }

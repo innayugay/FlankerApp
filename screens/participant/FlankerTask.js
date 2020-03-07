@@ -14,6 +14,8 @@ export default function FlankerTask ({navigation}) {
     const [seconds, setSeconds] = useState(0)
     const [isCorrect, setIsCorrect] = useState(true)
     const [totalTime, setTotalTime] = useState([])
+    const [congruentTime, setCongruentTime] = useState([])
+    const [incongruentTime, setIncongruentTime] = useState([])
 
     // const countSeconds = () =>{
     //     seconds
@@ -23,7 +25,7 @@ export default function FlankerTask ({navigation}) {
         //initiate timer here?
         // setCurrentTrial(trialSequence[0])
         // currentTrial = trialSequence[0]
-        console.log('=-=-=-=-=-=-=-=-=-=-=-=')
+        console.log(trialSequence, '=-=-=-=-=-=-=-=-=-=-=-=')
         renderArrows()
 
         var timer
@@ -37,14 +39,33 @@ export default function FlankerTask ({navigation}) {
             }, 1000)
         }
         // else if (!isActive){
-        //     clearInterval(timer)
-        //     console.log(timer, 'timer')
+        //     renderArrows()
+
         // }
         return ()=> {
             clearInterval(timer)
             console.log(seconds, 'is your seconds')
-            setTotalTime(totalTime=>[...totalTime, seconds])
-            console.log(totalTime, 'is your total time 0o0o0o0o0o0o0o0o0o0o0o')
+            if(trialSequence.length > 0){
+                if (trialSequence[0].type === 'congruentLeft' || trialSequence[0].type === 'congruentRight'){
+                    trialSequence.splice(0,1)
+                    console.log('!!!!!!!!!!!!!the trial sequence is now', trialSequence)
+                    setCongruentTime(congruentTime=>[...congruentTime, seconds])
+                    console.log('this trial is congruent', congruentTime)
+                    
+                    // setTrialSequence(trialSequence.splice(0,1))
+    
+                }
+                else if (trialSequence[0].type === 'incongruentLeft' || trialSequence[0].type === 'incongruentRight'){
+                    trialSequence.splice(0,1)
+                    setIncongruentTime(incongruentTime=>[...incongruentTime, seconds])
+                    console.log('this trial is incongruent', incongruentTime)
+                    // trialSequence.splice(0,1)
+                    // setTrialSequence(trialSequence.splice(0,1))
+                }
+            }
+
+            // setTotalTime(totalTime=>[...totalTime, seconds])
+            // console.log(totalTime, 'is your total time 0o0o0o0o0o0o0o0o0o0o0o')
             // renderArrows()
         }
 
@@ -112,9 +133,13 @@ export default function FlankerTask ({navigation}) {
             setArrows('Thank you! You have reached the end of the test')
             // call the saveResults
             setIsActive(false)
-            var sumOfTotalTime = totalTime.reduce((a, b) => a + b, 0)
-            console.log('your total time is', sumOfTotalTime)
-            navigation.navigate('Questionnaire', {sumOfTotalTime: sumOfTotalTime})
+            var congruentRT = congruentTime.reduce((a, b) => a + b, 0)
+            var incongruentRT = incongruentTime.reduce((a, b) => a + b, 0)
+
+            var globalRT = congruentRT + incongruentRT
+            // var sumOfTotalTime = totalTime.reduce((a, b) => a + b, 0)
+            console.log('your total time is', globalRT)
+            navigation.navigate('Questionnaire', {globalRT: globalRT, incongruentRT: incongruentRT, congruentRT: congruentRT})
             
         }
         
@@ -133,7 +158,7 @@ export default function FlankerTask ({navigation}) {
         if (trialSequence[0].correctAnswer === 'right'){
 
             // stop the timer, add it to the total time
-            trialSequence.splice(0,1)
+            // trialSequence.splice(0,1)
             console.log('you are correct and have' + trialSequence.length, 'trials left')
             // renderArrows()
             setIsActive(false)
@@ -145,7 +170,10 @@ export default function FlankerTask ({navigation}) {
             // trialSequence.splice(0,1)
             // renderArrows()
             console.log('wrong it was left!!!!!')
-            setIsCorrect(false)
+            // trialSequence.splice(0,1)
+
+            setIsCorrect(!isCorrect)
+            
 
 
         }
@@ -161,7 +189,7 @@ export default function FlankerTask ({navigation}) {
         if (trialSequence[0].correctAnswer === 'left'){
 
             // stop the timer, add it to the total time
-            trialSequence.splice(0,1)
+            // trialSequence.splice(0,1)
 
             console.log('you are correct and have' + trialSequence.length, 'trials left')
             setIsActive(false)
@@ -172,7 +200,9 @@ export default function FlankerTask ({navigation}) {
             // trialSequence.splice(0,1)
             // renderArrows()
             console.log('wrong it was right!!!!!')
-            setIsCorrect(false)
+            // trialSequence.splice(0,1)
+
+            setIsCorrect(!isCorrect)
 
         }
     }

@@ -30,8 +30,9 @@ export default function Instructions ({navigation}){
         db.collection('participants').doc(uid).collection('entries').add({
             studyID: navigation.getParam('studyID')
         })
-        .then(
-            navigation.navigate('FlankerTask', {arrs:arrs})
+        .then( function(entryID){
+            navigation.navigate('FlankerTask', {arrs:arrs, entryID: entryID})
+        }
         )
 
         

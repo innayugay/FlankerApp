@@ -1,13 +1,17 @@
 import { StyleSheet } from 'react-native';
 
 export const globalStyles = StyleSheet.create({
+    screen: {
+        backgroundColor: 'white',
+        flex:1,
+    },
     container: {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: "center",
         flex: 1,
-        backgroundColor:'white'
+        // backgroundColor:'white'
     },
     containerTop: {
         display: 'flex',
@@ -19,10 +23,10 @@ export const globalStyles = StyleSheet.create({
     header: {
         marginTop: 80,
       //   display: 'flex',
-        flexDirection: 'row',
+        // flexDirection: 'row',
         alignItems: 'center',
-        justifyContent: 'center',
-        padding: 5
+        // justifyContent: 'center',
+        // padding: 5
     },
     headerText:{
         fontSize: 20,

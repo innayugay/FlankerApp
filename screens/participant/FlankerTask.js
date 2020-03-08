@@ -3,20 +3,25 @@ import { StyleSheet, View } from 'react-native';
 import { Text, Button, Tab } from 'native-base';
 import { globalStyles } from '../../styles/global';
 import * as firebase from 'firebase';
+import { move } from 'formik';
 
 
 export default function FlankerTask ({navigation}) {
 
+    const entryID = navigation.getParam('entryID')
     const [isActive, setIsActive] = useState(false)
     const [trialSequence, setTrialSequence] = useState(navigation.getParam('arrs'))
 
+    // const [reRender, setReRender] = useState(false)
     const [arrows, setArrows] = useState(' ')
-    const [seconds, setSeconds] = useState(0)
+    const [currentCount, setCurrentCount] = useState(0)
     const [isCorrect, setIsCorrect] = useState(true)
-    const [totalTime, setTotalTime] = useState([])
+    // const [totalTime, setTotalTime] = useState([])
     const [congruentTime, setCongruentTime] = useState([])
     const [incongruentTime, setIncongruentTime] = useState([])
     const [moveNext, setMoveNext] = useState(false)
+    const [congruentCorrect, setCongruentCorrect] = useState(0)
+    const [incongruentCorrect, setIncongruentCorrect] = useState(0)
 
     // const countSeconds = () =>{
     //     seconds
@@ -26,17 +31,19 @@ export default function FlankerTask ({navigation}) {
         //initiate timer here?
         // setCurrentTrial(trialSequence[0])
         // currentTrial = trialSequence[0]
-        console.log(trialSequence, '=-=-=-=-=-=-=-=-=-=-=-=')
+        // console.log(trialSequence, '=-=-=-=-=-=-=-=-=-=-=-=')
         renderArrows()
 
         var timer
-        var seconds = 0
+        var count = 0
         console.log('in useeffect is active???? is', isActive)
+        console.log('in useeffect is correct is????', isCorrect)
         if(isActive){
+            clearInterval(timer)
             timer = setInterval(function(){
                 // setSeconds(seconds => seconds + 1)
-                seconds = seconds + 1
-                console.log(seconds, 'seconds')
+                count = count + 1
+                // console.log(seconds, 'seconds')
             },10)
         }
         // else if (!isActive){
@@ -45,90 +52,97 @@ export default function FlankerTask ({navigation}) {
         // }
         return ()=> {
             clearInterval(timer)
-            console.log(seconds, 'is your seconds')
-            if (moveNext){
-                if(trialSequence.length > 0){
-                    if (trialSequence[0].type === 'congruentLeft' || trialSequence[0].type === 'congruentRight'){
-                        trialSequence.splice(0,1)
-                        console.log('!!!!!!!!!!!!!the trial sequence is now', trialSequence)
-                        setCongruentTime(congruentTime=>[...congruentTime, seconds])
-                        console.log('this trial is congruent', congruentTime)
+            console.log(count, 'is your count')
+            setCurrentCount(count)
+            // if (isCorrect){
+            //     if(trialSequence.length > 0){
+            //         if (trialSequence[0].type === 'congruentLeft' || trialSequence[0].type === 'congruentRight'){
+            //             trialSequence.splice(0,1)
+            //             console.log('!!!!!!!!!!!!!the trial sequence is now', trialSequence)
+            //             setCongruentTime(congruentTime=>[...congruentTime, count])
+            //             console.log('this trial is congruent', congruentTime)
                         
-                        // setTrialSequence(trialSequence.splice(0,1))
+            //             // setTrialSequence(trialSequence.splice(0,1))
         
-                    }
-                    else if (trialSequence[0].type === 'incongruentLeft' || trialSequence[0].type === 'incongruentRight'){
-                        trialSequence.splice(0,1)
-                        setIncongruentTime(incongruentTime=>[...incongruentTime, seconds])
-                        console.log('this trial is incongruent', incongruentTime)
-                        // trialSequence.splice(0,1)
-                        // setTrialSequence(trialSequence.splice(0,1))
-                    }
-                }
-            }
-
+            //         }
+            //         else if (trialSequence[0].type === 'incongruentLeft' || trialSequence[0].type === 'incongruentRight'){
+            //             trialSequence.splice(0,1)
+            //             setIncongruentTime(incongruentTime=>[...incongruentTime, count])
+            //             console.log('this trial is incongruent', incongruentTime)
+            //             // trialSequence.splice(0,1)
+            //             // setTrialSequence(trialSequence.splice(0,1))
+            //         }
+            //     }
+            // }
+            // else{
+            //     console.log('/////////////// incorrect answers dont get recorded //////////////////')
+            // }
             // setTotalTime(totalTime=>[...totalTime, seconds])
             // console.log(totalTime, 'is your total time 0o0o0o0o0o0o0o0o0o0o0o')
             // renderArrows()
         }
 
-    },[isActive, isCorrect])
+    },[isCorrect, moveNext, isActive])
 
+    function processResponse(){
+        console.log('process response is called. Here the currect count is', currentCount)
+        if (isCorrect){
+            if(trialSequence.length > 0){
+                if (trialSequence[0].type === 'congruentLeft' || trialSequence[0].type === 'congruentRight'){
+                    trialSequence.splice(0,1)
+                    console.log('!!!!!!!!!!!!!the trial sequence is now', trialSequence)
+                    setCongruentTime(congruentTime=>[...congruentTime, currentCount])
+                    console.log('this trial is congruent', congruentTime)
+                    
+                    // setTrialSequence(trialSequence.splice(0,1))
+    
+                }
+                else if (trialSequence[0].type === 'incongruentLeft' || trialSequence[0].type === 'incongruentRight'){
+                    trialSequence.splice(0,1)
+                    setIncongruentTime(incongruentTime=>[...incongruentTime, currentCount])
+                    console.log('this trial is incongruent', incongruentTime)
+                    // trialSequence.splice(0,1)
+                    // setTrialSequence(trialSequence.splice(0,1))
+                }
+            }
+        }
+        else{
+            console.log('/////////////// incorrect answers dont get recorded //////////////////')
+        }
+    }
 
     function renderArrows (){
         setIsActive(true)
+        
+        // setRerender(true)
         console.log('in render arrows is active is', isActive)
 
         console.log(trialSequence.length, 'trials left')
         if (trialSequence.length > 0){
-            // currentTrial = trialSequence[0]
 
-            // setCurrentTrial(trialSequence[0])
             console.log('heyheyhey')
-            // controlTimer()
-            // action = true
-            // startTimer()
-            // setIsActive(true)
             if (trialSequence[0].type === 'congruentRight'){
-                // setCurrentTrial('congruentRight')
-                // currentTrialType='congruentRight'
+                // setIsActive(true)
                 console.log('corrent answer is', trialSequence[0].correctAnswer)
                 setArrows('→   →   →   →   → ')
-                // setIsActive(true)
-                
-                // startTimer()
-                // initiate timer here?
+
             }
             else if (trialSequence[0].type === 'congruentLeft'){
-                // setCurrentTrial('congruentRight')
-                // currentTrialType='congruentRight'
+                // setIsActive(true)
                 console.log('corrent answer is', trialSequence[0].correctAnswer)
                 setArrows('←   ←    ←    ←    ←')
-                // setIsActive(true)
-                // action = true
-                // startTimer()
-
-                // initiate timer here?
             }
             else if( trialSequence[0].type === 'incongruentRight'){
+                // setIsActive(true)
 
                 console.log('corrent answer is', trialSequence[0].correctAnswer)
                 setArrows(' ←   ←   →   ←   ←')
-                // setIsActive(true)
-                // action = true
-                // startTimer()
-
-                // return render = <Text> ←    ←    →    ←    ← </Text>
             }
             else if( trialSequence[0].type === 'incongruentLeft'){
+                // setIsActive(true)
 
                 console.log('corrent answer is', trialSequence[0].correctAnswer)
                 setArrows('  →    →    ←    →   → ')
-                // setIsActive(true)
-                // action = true
-                // startTimer()
-
-                // return render = <Text> ←    ←    →    ←    ← </Text>
             }
             
         }
@@ -142,7 +156,7 @@ export default function FlankerTask ({navigation}) {
             var globalRT = congruentRT + incongruentRT
             // var sumOfTotalTime = totalTime.reduce((a, b) => a + b, 0)
             console.log('your total time is', globalRT)
-            navigation.navigate('Questionnaire', {globalRT: globalRT, incongruentRT: incongruentRT, congruentRT: congruentRT})
+            navigation.navigate('Questionnaire', {globalRT: globalRT, incongruentRT: incongruentRT, congruentRT: congruentRT, entryID: entryID})
             
         }
         
@@ -152,21 +166,25 @@ export default function FlankerTask ({navigation}) {
 
     function checkResponseRight() {
         console.log('your answer is RIGHT')
-        // action = false
-        // startTimer()
-        // controlTimer()
-        // currentTrial = trialSequence[0]
-        // setIsActive(false)
 
         if (trialSequence[0].correctAnswer === 'right'){
 
             // stop the timer, add it to the total time
             // trialSequence.splice(0,1)
             console.log('you are correct and have' + trialSequence.length, 'trials left')
-            setMoveNext(true)
-
+            if (trialSequence[0].type === 'incongruentRight'){
+                setIncongruentCorrect(incongruentCorrect + 1)
+                console.log(incongruentCorrect, 'of incongruent trials were correct')
+            }
+            else if(trialSequence[0].type === 'congruentRight'){
+                setCongruentCorrect(congruentCorrect + 1)
+                console.log(congruentCorrect, 'of congruent trials were correct')
+            }
+            setMoveNext(!moveNext)
+            setIsCorrect(true)
             // renderArrows()
-            setIsActive(false)
+            // setIsActive(false)
+            processResponse()
 
 
         }
@@ -176,10 +194,11 @@ export default function FlankerTask ({navigation}) {
             // renderArrows()
             console.log('wrong it was left!!!!!')
             // trialSequence.splice(0,1)
-            setMoveNext(true)
+            // setMoveNext(true)
 
 
-            setIsCorrect(!isCorrect)
+            setIsCorrect(false)
+            processResponse()
             
 
 
@@ -188,20 +207,27 @@ export default function FlankerTask ({navigation}) {
 
     function checkResponseLeft() {
         console.log('your answer is LEFT')
-        // action = false
-        // console.log('timer is', timer)
-        // startTimer()
-        // controlTimer()
-        // setIsActive(false)
         if (trialSequence[0].correctAnswer === 'left'){
 
             // stop the timer, add it to the total time
             // trialSequence.splice(0,1)
 
             console.log('you are correct and have' + trialSequence.length, 'trials left')
-            setMoveNext(true)
-            setIsActive(false)
+            if (trialSequence[0].type === 'incongruentLeft'){
+                setIncongruentCorrect(incongruentCorrect + 1)
+                console.log(incongruentCorrect, 'of incongruent trials were correct')
+
+            }
+            else if(trialSequence[0].type === 'congruentLeft'){
+                setCongruentCorrect(congruentCorrect + 1)
+                console.log(congruentCorrect, 'of congruent trials were correct')
+            }
+            setMoveNext(!moveNext)
+            setIsCorrect(true)
+            // setIsActive(false)
             // renderArrows()
+            processResponse()
+
         }
         else if (trialSequence[0].correctAnswer === 'right') {
             //stop the timer, discard the value 
@@ -209,8 +235,10 @@ export default function FlankerTask ({navigation}) {
             // renderArrows()
             console.log('wrong it was right!!!!!')
             // trialSequence.splice(0,1)
-            setMoveNext(true)
-            setIsCorrect(!isCorrect)
+            // setMoveNext(true)
+            setIsCorrect(false)
+            processResponse()
+
 
         }
     }

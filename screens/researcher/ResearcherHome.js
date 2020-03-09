@@ -12,6 +12,7 @@ export default function ResearcherHome ({navigation}) {
     const [modalOpen, setModalOpen] = useState(false)
     const [noStudiesToShow, setStudiesToShow] = useState(true)
     const [studies, setStudies] = useState([])
+    const [toggleRender, setToggleRender] = useState(false)
     // var noStudiesToShow = false
 
     function addStudy(values) {
@@ -27,9 +28,9 @@ export default function ResearcherHome ({navigation}) {
         })
         .then ( function(docRef) {
             console.log(docRef.id, 'this is docref id!!!')
-            // db.collection('researchers').doc(uid).update({
-            //     studies: firebase.firestore.FieldValue.arrayUnion(docRef.id)
-            // })
+            db.collection('researchers').doc(uid).update({
+                studies: firebase.firestore.FieldValue.arrayUnion(docRef.id)
+            })
             db.collection('studies').doc(docRef.id).set({
                 researcher: uid,
                 title: values.title,
@@ -38,24 +39,29 @@ export default function ResearcherHome ({navigation}) {
                 studyID: docRef.id
             })
         })
+        // .then(
+        setToggleRender(!toggleRender)
+        // )
+
     }
 
 
     useEffect(() => {
+        setStudies([])
         var db = firebase.firestore()
         db.collection('researchers').doc(firebase.auth().currentUser.uid).get()
-        .then( function(doc) {
-            if(doc.data().studies){
-                console.log('this user has studies', doc.data().studies)
+        .then( function(theDoc) {
+            if(theDoc.data().studies){
+                console.log('this user has studies', theDoc.data().studies)
                 
                 setStudiesToShow(false)
-                for (var i=0; i < doc.data().studies.length; i++){
+                for (var i=0; i < theDoc.data().studies.length; i++){
                     // console.log(doc.data().studies[0])
-                    db.collection('studies').doc(doc.data().studies[i]).get()
+                    db.collection('studies').doc(theDoc.data().studies[i]).get()
                     .then(function(newDoc){
-                        console.log(...studies, 'studiessss')
+                        console.log(studies, 'studiessss')
                         if(studies.indexOf(newDoc.data()) === -1){
-                            setStudies(...studies =>[...studies, newDoc.data()])
+                            setStudies(studies =>[...studies, newDoc.data()])
                         }
                         else{
                             console.log('oops duplicating!')
@@ -70,7 +76,7 @@ export default function ResearcherHome ({navigation}) {
         )
         // console.log(noStudiesToShow)
         // console.log('studies are', studies)
-    },[])
+    },[toggleRender])
     
     console.log(noStudiesToShow, '???')
     const noStudies = 

@@ -26,12 +26,18 @@ export default function Instructions ({navigation}){
        console.log(navigation.getParam('studyID'))
         var db = firebase.firestore()
         var uid = firebase.auth().currentUser.uid
+        var studyID = navigation.getParam('studyID')
     
         db.collection('participants').doc(uid).collection('entries').add({
-            studyID: navigation.getParam('studyID')
+            studyID: studyID
         })
         .then( function(entryID){
-            navigation.navigate('FlankerTask', {arrs:arrs, entryID: entryID})
+            db.collection('studies').doc(studyID).update({
+                entries: firebase.firestore.FieldValue.arrayUnion(entryID.id)
+            })
+            .then(
+                navigation.navigate('FlankerTask', {arrs:arrs, entryID: entryID})
+            )
         }
         )
 

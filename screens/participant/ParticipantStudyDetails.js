@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { Text, Button } from 'native-base';
 import { globalStyles } from '../../styles/global';
@@ -6,22 +6,46 @@ import * as firebase from 'firebase';
 
 
 
-export default function ResearcherStudyDetails({navigation}){
+export default function ParticipantStudyDetails({navigation}){
 
 
-    // const addEntry = () => {
-    //     var db = firebase.firestore()
-    //     var uid = firebase.auth().currentUser.uid
+    const [alreadyTaken, setAlreadyTaken] = useState(false)
+
+    useEffect(()=>{
+
+        var db = firebase.firestore()
+        var uid = firebase.auth().currentUser.uid
+        var studyID = navigation.getParam('studyID')
+        db.collection('participants').doc(uid).collection('entries').where('studyID', '==', studyID).get()
+        .then( (theEntry)=>{
+            theEntry.forEach(doc=>{
+                console.log(doc.data(), '!!!!!!!')
+                setAlreadyTaken(true)
+            })
+
+            // console.log(theEntry, 'yyyyyyyyyyyy')
+            // if (theEntry.data().exists){
+            //     console.log('oh youve already taken the test!!!')
+            // }
+            // else{
+            //     console.log('the user hasnt taken the test yet')
+            // }
+        })
     
-    //     db.collection('participants').doc(uid).collection('entries').add({
-    //         studyID: navigation.getParam('studyID')
-    //     })
-    //     .then(
-    //         navigation.navigate('Instructions')
-    //     )
-    // }
+
+    },[])
+
+
     var currentStudyID = navigation.getParam('studyID')
-    console.log('navigation get param', navigation)
+    // console.log('navigation get param', navigation)
+
+    const button = 
+        <Button style={globalStyles.button} onPress={ ()=> {navigation.navigate('Instructions', {studyID: currentStudyID}) } }>
+            <Text style={globalStyles.buttonText}> Start the test </Text>
+        </Button>
+
+    const testTaken = 
+        <Text style={styles.testTaken}> You have already taken the test for this study. Thank you! </Text>
     return (
     <View style={globalStyles.containerTop}>
         <View style={globalStyles.header}> 
@@ -49,9 +73,10 @@ export default function ResearcherStudyDetails({navigation}){
                 <Text style={globalStyles.darkText}>Note: you can only take the test once. </Text>
             </View>
         </View>
-        <Button style={globalStyles.button} onPress={ ()=> {navigation.navigate('Instructions', {studyID: currentStudyID}) } }>
-            <Text style={globalStyles.buttonText}> Start the test </Text>
-        </Button>
+        <View>
+            {alreadyTaken? testTaken : button}
+        </View>
+
     </View>
     )
 }
@@ -73,6 +98,15 @@ const styles = StyleSheet.create({
         padding: 20,
         borderRadius: 7,
         margin: 20
+    },
+
+    testTaken:{
+        // width: 200,
+        textAlign: "center",
+        backgroundColor: '#27bbd9',
+        color: 'white',
+        padding: 20,
+        borderRadius: 10
     }
 
 })

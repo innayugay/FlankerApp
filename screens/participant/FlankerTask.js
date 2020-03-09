@@ -150,8 +150,9 @@ export default function FlankerTask ({navigation}) {
             setArrows('Thank you! You have reached the end of the test')
             // call the saveResults
             setIsActive(false)
-            var congruentRT = congruentTime.reduce((a, b) => a + b, 0) * 10
-            var incongruentRT = incongruentTime.reduce((a, b) => a + b, 0) * 10
+            var congruentRT = Math.round(((congruentTime.reduce((a, b) => a + b, 0) * 10)/congruentCorrect *100) / 100)
+
+            var incongruentRT = Math.round(((incongruentTime.reduce((a, b) => a + b, 0) * 10)/incongruentCorrect*100)/100)
 
             var globalRT = congruentRT + incongruentRT
             // var sumOfTotalTime = totalTime.reduce((a, b) => a + b, 0)

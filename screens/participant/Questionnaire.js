@@ -40,13 +40,22 @@ export default class Questionnaire extends React.Component {
             theLanguages.push(this.state.selectedLanguages[i].value)
         }
         console.log('languages that will be submitted', theLanguages)
+        console.log('congruentRT', this.props.navigation.getParam('congruentRT'), 'incongruentRT', this.props.navigation.getParam('incongruentRT'), 'globalRT', this.props.navigation.getParam('globalRT'))
         console.log(this.props.navigation.getParam('entryID').id)
+        
+        var congruentRT = this.props.navigation.getParam('congruentRT')
+        var incongruentRT = this.props.navigation.getParam('incongruentRT')
+        var globalRT = this.props.navigation.getParam('globalRT')
+
         db.collection('participants').doc(uid).collection('entries').doc(entryID).update({
             gender: this.state.gender,
             age: this.state.age,
-            languages: theLanguages
+            languages: theLanguages,
+            congruentRT: congruentRT,
+            incongruentRT: incongruentRT,
+            globalRT: globalRT
         })
-        this.props.navigation.navigate('ThankYou')
+        this.props.navigation.navigate('ThankYou', {globalRT:globalRT, congruentRT:congruentRT, incongruentRT:incongruentRT})
     }
 
     render(){

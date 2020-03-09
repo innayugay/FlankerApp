@@ -12,6 +12,7 @@ export default function ParticipantHome ({navigation}) {
     const [modalOpen, setModalOpen] = useState(false)
     const [noStudiesToShow, setStudiesToShow] = useState(true)
     const [studies, setStudies] = useState([])
+    const [toggleRender, setToggleRender] = useState(false)
     // var noStudiesToShow = false
 
     function addStudy(values) {
@@ -26,16 +27,14 @@ export default function ParticipantHome ({navigation}) {
                 participants: firebase.firestore.FieldValue.arrayUnion(uid)
             })
         )
-        // db.collection('participants').doc(uid).set({
-        //     studyID: values.studyID
-        // })
-        // .then(
-        //     console.log('study added successfully')
-        // )
+        .then(
+            setToggleRender(!toggleRender)
+        )
     }
 
 
     useEffect(() => {
+        setStudies([])
         var db = firebase.firestore()
         db.collection('participants').doc(firebase.auth().currentUser.uid).get()
         .then(function (theDoc){
@@ -62,7 +61,7 @@ export default function ParticipantHome ({navigation}) {
 
         // console.log(noStudiesToShow)
         // console.log('studies are', studies)
-    },[])
+    },[toggleRender])
     
     console.log(noStudiesToShow, '???')
     const noStudies = 

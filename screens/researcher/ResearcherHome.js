@@ -84,29 +84,40 @@ export default function ResearcherHome ({navigation}) {
         <Text style={globalStyles.lightText}> You don't have any studies yet. </Text>
 
     const displayStudies = 
-            <FlatList data={studies} renderItem={({ item }) => (
-                <Card style={styles.containerRow}>
-                    <CardItem>
-                        <Text style={globalStyles.titleText}>{ item.title }</Text>
-                    </CardItem>
-                    <TouchableOpacity onPress={ ()=> navigation.navigate('StudyDetails', item)}>
-                        <Text>View details</Text>
-                    </TouchableOpacity>
-                </Card>
-              )} />
+        <View style={{marginTop: 20, padding: 8}}>
+            <Text style={globalStyles.regularText}> All studies ({studies.length})</Text>
+            <FlatList data={studies} style={{marginTop:20}} renderItem={({ item }) => (
+                <View style={styles.containerList}>
+                    {/* <Card style={styles.card}> */}
+                        <CardItem style={styles.card}>
+                            <Text style={globalStyles.regularText}>{ item.title }</Text>
+                        </CardItem>
+                    {/* </Card> */}
+                    <Button onPress={ ()=> navigation.navigate('StudyDetails', item)} style={globalStyles.button}>
+                        <Text style={globalStyles.buttonText}>View </Text>
+                    </Button>
+                </View>
+            )} />
+        </View>
     
     
     return (
-        <View>
+        <View style={globalStyles.screen}>
             <View style={globalStyles.header}> 
                 <Text style={globalStyles.headerText}> My Studies </Text>
+                <View style={globalStyles.dividerLine}/>
             </View>
 
             {/* popup window */}
-            <View style={globalStyles.container}>
+            <View>
                 <Modal visible={modalOpen} animationType='slide' transparent={true}>
                     <View style={styles.modal}>
-                        <Text style={globalStyles.darkText}> Add a new study here (researcher)</Text>
+                        <View style={styles.containerList}>
+                            <Text style={globalStyles.darkText}> Create a new study</Text>
+                            <Button onPress={()=> setModalOpen(false)} style={{backgroundColor:'rgba(0,0,0,0)', position:'absolute', bottom: 10, left: 170}}>
+                                <Text style={{color:'grey', fontSize:25}}> x </Text>
+                            </Button>
+                        </View>
                         <Formik
                             initialValues={{title:'', aims:'', description:''}}
                             onSubmit={(values) => {
@@ -114,45 +125,41 @@ export default function ResearcherHome ({navigation}) {
                             }}
                         >
                         {(formikProps)=>(
-                            <View>
+                            <View style={{width:200, marginTop:20}}>
+                                <Text style={globalStyles.darkText}> Title </Text>
                                 <TextInput 
-                                    style= {styles.input}
-                                    placeholder='Title'
+                                    style= {globalStyles.input}
                                     onChangeText={formikProps.handleChange('title')}
                                     value={formikProps.values.title}
                                 ></TextInput>
+                                <Text style={globalStyles.darkText}> Aims </Text>
                                 <TextInput 
-                                    style= {styles.input}
-                                    placeholder='Aims'
-                                    onChangeText={formikProps.handleChange('aims')}
+                                    style= {globalStyles.input}                                    onChangeText={formikProps.handleChange('aims')}
                                     value={formikProps.values.aims}
                                 ></TextInput>
+                                <Text style={globalStyles.darkText}> Description </Text>
                                 <TextInput 
-                                    style= {styles.input}
-                                    placeholder='Description'
+                                    style= {globalStyles.input}
                                     onChangeText={formikProps.handleChange('description')}
                                     value={formikProps.values.description}
                                 ></TextInput>
                                 <Button style={globalStyles.button} title='Submit' onPress={formikProps.handleSubmit}>
-                                    <Text> Add Study</Text>
+                                    <Text> Submit </Text>
                                 </Button>
                             </View>
                         )}
                         </Formik>
-                        <Button onPress={()=> setModalOpen(false)}>
-                            <Text> X </Text>
-                        </Button>
                     </View>
                 </Modal>
             </View>
             {/* popup window */}
 
-            <View style={styles.padding}>
+            <View>
                 {noStudiesToShow? noStudies: displayStudies}
             
                 {/* <Text style={globalStyles.lightText}> You don't have any studies yet. </Text> */}
-                <Button style={styles.roundButton} onPress={()=> setModalOpen(true)}>
-                    <Text> + </Text>
+                <Button style={globalStyles.roundButton} onPress={()=> setModalOpen(true)}>
+                    <Text style={{fontSize: 25, fontWeight: 'bold', marginRight: 4}}>+ </Text>
                 </Button>
             </View>
         </View>
@@ -163,18 +170,22 @@ export default function ResearcherHome ({navigation}) {
 }
 
 const styles = StyleSheet.create({
-    containerRow:{
+    containerList:{
         // display:'flex',
         // marginTop: 20,
         flexDirection: 'row',
-        justifyContent:'space-between',
+        justifyContent:'space-around',
         // height: 10
     },
+    centered:{
+        justifyContent: "center"
+    },
     modal: {
-        backgroundColor: '#b1d9e7',
+        backgroundColor: '#d6eaf2',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
+        alignItems: 'center',
         width: 300,
         height: 450,
         padding: 30,
@@ -190,14 +201,16 @@ const styles = StyleSheet.create({
         fontSize: 15,
         margin: 10
     },
-    roundButton: {
-        width: 45,
-        borderRadius: 30
-    },
     sheet: {
         height: 200
     },
     body: {
         padding: 10
+    },
+    card: {
+        width: 320,
+        backgroundColor: 'rgba(177,217,231, 0.4)',
+        borderRadius: 4,
+        margin: 7
     }
 })

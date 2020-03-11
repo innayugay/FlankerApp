@@ -33,33 +33,50 @@ export default class ResearcherLogIn extends React.Component {
 
   render(){
     return (
-      <View style={styles.form}>
-          <Text style={styles.inputTitle}> Email address</Text>
-          <TextInput 
-            style= {styles.input}
-            onChangeText = {email => this.setState({email})}
-            value={this.state.email}
-          ></TextInput>
-          <Text style={styles.inputTitle}> Password </Text>
-          <TextInput 
-            style= {styles.input}
-            secureTextEntry
-            onChangeText={password => this.setState({password})}
-          ></TextInput>
-          <Button onPress={this.handleLogin}> 
-            <Text> Log In </Text>
-          </Button>
-          <TouchableOpacity
-            onPress={()=> this.props.navigation.push('ResearcherSignUp')}>
-              <Text> New to Flanker App? <Text style = {styles.link}> Sign Up </Text> </Text>
-          </TouchableOpacity>
-      </View>
+      <View style={globalStyles.screen}>
+        <View style={globalStyles.container}>
+          <View style={globalStyles.header}>
+            <Text style={globalStyles.headerText}> Researcher Log In </Text>
+            <View style={globalStyles.dividerLine}/>
+          </View>
+          <View style={globalStyles.insideContainer}>
+              <Text style={globalStyles.inputTitle}> Email address</Text>
+              <TextInput 
+                style= {globalStyles.input}
+                onChangeText = {email => this.setState({email})}
+                value={this.state.email}
+              ></TextInput>
+              <Text style={globalStyles.inputTitle}> Password </Text>
+              <TextInput 
+                style= {globalStyles.input}
+                secureTextEntry
+                onChangeText={password => this.setState({password})}
+              ></TextInput>
+              <View style={styles.centerContainer}>
+                  <Button onPress={this.handleLogin} style={globalStyles.button}> 
+                    <Text style={globalStyles.buttonText}> Log In </Text>
+                  </Button>
+                  <TouchableOpacity
+                    onPress = {()=> this.props.navigation.push('ResearcherSignUp')}>
+                    <View style={styles.centerContainer}>
+                      <Text style={styles.link}> New to Flanker App? </Text>
+                      <Text style = {{textDecorationLine: 'underline'}}> Sign Up </Text> 
+                    </View>
+                  </TouchableOpacity>
+              </View>
 
+              
+          </View>
+        </View>
+      </View>
     )
   }
 }
 
 const styles = StyleSheet.create({
+  centerContainer: {
+    alignItems: 'center'
+  },
   header: {
     display: 'flex',
     flexDirection: 'column',
@@ -68,20 +85,13 @@ const styles = StyleSheet.create({
     padding: 5
   },
   form: {
-    marginTop: 48,
+    marginBottom: 48,
     marginHorizontal: 30
   },
-  inputTitle: {
-    fontSize: 15
-  },
-  input: {
-    backgroundColor: 'white',
-    borderBottomColor: 'black',
-    color: 'black',
-    height: 40,
-    fontSize: 15,
-  },
   link: {
-    fontWeight: 'bold'
-  }
+    fontFamily: 'Arial',
+    textAlign: 'center',
+    color: 'grey',
+    marginTop: 30
+  },
 })

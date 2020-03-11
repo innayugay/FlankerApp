@@ -7,9 +7,9 @@ export default function Welcome({navigation}) {
 
     return (
       <View style={styles.container}>
-        <View style={styles.header}> 
-          <Text style={globalStyles.headerText}> Welcome to the Flanker App! </Text>
-          <Text style={globalStyles.lightText}> What best describes you? </Text>
+        <View style={globalStyles.header}> 
+          <Text style={styles.headerText}> Welcome to the Flanker App! </Text>
+          <Text style={styles.lightText}> What best describes you? </Text>
         </View>
 
           {/* <Button style={globalStyles.button}> 
@@ -19,10 +19,10 @@ export default function Welcome({navigation}) {
             <Text style={globalStyles.buttonText} onPress={() => navigation.push('ParticipantLogIn')}> I am a participant</Text> 
           </Button> */}
           <Button style={globalStyles.button}> 
-            <Text style={globalStyles.buttonText} onPress={() => navigation.navigate('ResearcherLogIn')}>I am a researcher</Text> 
+            <Text style={styles.buttonText} onPress={() => navigation.navigate('ResearcherLogIn')}>I am a researcher</Text> 
           </Button>
           <Button style={globalStyles.button}> 
-            <Text style={globalStyles.buttonText} onPress={() => navigation.navigate('ParticipantLogIn')}> I am a participant</Text> 
+            <Text style={styles.buttonText} onPress={() => navigation.navigate('ParticipantLogIn')}> I am a participant</Text> 
           </Button>
       </View>
 
@@ -44,5 +44,22 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       justifyContent: "center",
       padding: 5
+    },
+    headerText:{
+      fontSize: 20,
+      color: '#17547d',
+      textAlign: "center",
+      width: 300,
+      marginBottom: 5
+    },
+    buttonText: {
+      fontFamily: "Arial",
+      color: 'white',
+      fontSize: 16,
+      textAlign: 'center'
+    },
+    lightText: {
+      color: '#17547d',
+      marginBottom: 20
     }
 })

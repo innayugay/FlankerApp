@@ -14,6 +14,7 @@ import Instructions from '../screens/participant/Instructions';
 import FlankerTask from '../screens/participant/FlankerTask';
 import Questionnaire from '../screens/participant/Questionnaire';
 import ThankYou from '../screens/participant/ThankYou';
+import StudyResults from '../screens/researcher/StudyResults';
 
 
 
@@ -97,6 +98,9 @@ const ResearcherStack = createSwitchNavigator ({
     navigationOptions: () => ({
       headerShown: true
     })
+  },
+  StudyResults: {
+    screen: StudyResults,
   }
 })
 

@@ -51,6 +51,7 @@ export default function ResearcherHome ({navigation}) {
         var db = firebase.firestore()
         db.collection('researchers').doc(firebase.auth().currentUser.uid).get()
         .then( function(theDoc) {
+            console.log('looking into the researchers profile...', theDoc.data())
             if(theDoc.data().studies){
                 console.log('this user has studies', theDoc.data().studies)
                 

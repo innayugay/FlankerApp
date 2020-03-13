@@ -6,24 +6,27 @@ import { StyleSheet, View } from 'react-native';
 export default function Welcome({navigation}) {
 
     return (
-      <View style={styles.container}>
-        <View style={globalStyles.header}> 
-          <Text style={styles.headerText}> Welcome to the Flanker App! </Text>
-          <Text style={styles.lightText}> What best describes you? </Text>
+      <View style={globalStyles.screen}>
+        <View style={styles.container}>
+          <View style={globalStyles.header}> 
+            <Text style={styles.headerText}> Welcome to the Flanker App! </Text>
+            <Text style={styles.lightText}> What best describes you? </Text>
+          </View>
+
+            {/* <Button style={globalStyles.button}> 
+              <Text style={globalStyles.buttonText} onPress={() => navigation.push('ResearcherLogIn')}>I am a researcher</Text> 
+            </Button>
+            <Button style={globalStyles.button}> 
+              <Text style={globalStyles.buttonText} onPress={() => navigation.push('ParticipantLogIn')}> I am a participant</Text> 
+            </Button> */}
+            <Button style={globalStyles.button}> 
+              <Text style={styles.buttonText} onPress={() => navigation.navigate('ResearcherLogIn')}>I am a researcher</Text> 
+            </Button>
+            <Button style={globalStyles.button}> 
+              <Text style={styles.buttonText} onPress={() => navigation.navigate('ParticipantLogIn')}> I am a participant</Text> 
+            </Button>
         </View>
 
-          {/* <Button style={globalStyles.button}> 
-            <Text style={globalStyles.buttonText} onPress={() => navigation.push('ResearcherLogIn')}>I am a researcher</Text> 
-          </Button>
-          <Button style={globalStyles.button}> 
-            <Text style={globalStyles.buttonText} onPress={() => navigation.push('ParticipantLogIn')}> I am a participant</Text> 
-          </Button> */}
-          <Button style={globalStyles.button}> 
-            <Text style={styles.buttonText} onPress={() => navigation.navigate('ResearcherLogIn')}>I am a researcher</Text> 
-          </Button>
-          <Button style={globalStyles.button}> 
-            <Text style={styles.buttonText} onPress={() => navigation.navigate('ParticipantLogIn')}> I am a participant</Text> 
-          </Button>
       </View>
 
     );

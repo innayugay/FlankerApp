@@ -19,7 +19,8 @@ export const globalStyles = StyleSheet.create({
         // alignItems: 'center',
         justifyContent: "center",
         // flex: 1,
-        width: 500
+        margin: 40,
+        width: 300
     },
     containerTop: {
         display: 'flex',

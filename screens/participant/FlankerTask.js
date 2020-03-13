@@ -245,18 +245,19 @@ export default function FlankerTask ({navigation}) {
     }
 
     return(
+        <View style={globalStyles.screen}>
+            <View style={styles.container}>
+                <Text style={styles.arrows}>{arrows}</Text>
+                {/* <Text> →   →   →   →   →  </Text> */}
 
-        <View style={styles.container}>
-            <Text style={styles.arrows}>{arrows}</Text>
-            {/* <Text> →   →   →   →   →  </Text> */}
-
-            <View style={styles.containerRow}>
-                <Button style={styles.button} onPress={()=>checkResponseLeft()}> 
-                    <Text>L</Text>
-                </Button>
-                <Button style={styles.button} onPress={()=>checkResponseRight()}>
-                    <Text>R</Text>
-                </Button>
+                <View style={styles.containerRow}>
+                    <Button style={styles.button} onPress={()=>checkResponseLeft()}> 
+                        <Text>L</Text>
+                    </Button>
+                    <Button style={styles.button} onPress={()=>checkResponseRight()}>
+                        <Text>R</Text>
+                    </Button>
+                </View>
             </View>
         </View>
     )

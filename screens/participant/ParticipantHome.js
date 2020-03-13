@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Text, Button, Container, Card, CardItem } from 'native-base';
 import { globalStyles } from '../../styles/global'
-import { StyleSheet, View, Modal, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import Modal from "react-native-modal";
 import { TextInput, FlatList } from 'react-native-gesture-handler';
 import * as firebase from 'firebase';
 import { Formik } from 'formik';
@@ -65,43 +66,53 @@ export default function ParticipantHome ({navigation}) {
     
     console.log(noStudiesToShow, '???')
     const noStudies = 
-    <Text style={globalStyles.lightText}> You are not participating in any study yet. </Text>
+    <Text style={styles.noStudiesText}> You are not participating in any study yet. </Text>
     const displayStudies = 
-            <FlatList data={studies} renderItem={({ item }) => (
-                <Card style={styles.containerRow}>
-                    <CardItem>
-                        <Text style={globalStyles.titleText}></Text>
-                        <Text style={globalStyles.titleText}>{ item.title }</Text>
-                    </CardItem>
-                    <TouchableOpacity onPress={ ()=> navigation.navigate('StudyDetails', item)}>
-                        <Text styles={globalStyles.buttonText}>View details</Text>
-                    </TouchableOpacity>
-                </Card>
-            )}/>
+            <View style={{marginTop: 20, padding: 8}}>
+            <Text style={globalStyles.regularText}> All studies ({studies.length})</Text>
+            <FlatList data={studies} style={{marginTop:20}} renderItem={({ item }) => (
+                <View style={styles.containerList}>
+                    {/* <Card style={styles.card}> */}
+                        <CardItem style={styles.card}>
+                            <Text style={globalStyles.regularText}>{ item.title }</Text>
+                        </CardItem>
+                    {/* </Card> */}
+                    <Button onPress={ ()=> navigation.navigate('StudyDetails', item)} style={globalStyles.button}>
+                        <Text style={globalStyles.buttonText}>View </Text>
+                    </Button>
+                </View>
+            )} />
+        </View>
     
     
     return (
-        <View>
+        <View style={globalStyles.screen}>
             <View style={globalStyles.header}> 
                 <Text style={globalStyles.headerText}> My Studies </Text>
+                <View style={globalStyles.dividerLine}/>
             </View>
 
             {/* popup window */}
-            <View style={globalStyles.container}>
-                <Modal visible={modalOpen} animationType='slide' transparent={true}>
+            <View>
+                <Modal isVisible={modalOpen}>
                     <View style={styles.modal}>
-                        <Text style={globalStyles.darkText}> Add a new study here (participant)</Text>
+                        <Text style={styles.modalHeader}> Create a new study</Text>
+                        <View style={styles.container}>
+                            <Button onPress={()=> setModalOpen(false)} style={{backgroundColor:'rgba(0,0,0,0)', position:'absolute', bottom: 50, left: 100}}>
+                                <Text style={{color:'grey', fontSize:25}}> x </Text>
+                            </Button>
+                        </View>
                         <Formik
-                            initialValues={{studyID:''}}
+                            initialValues={{title:'', aims:'', description:''}}
                             onSubmit={(values) => {
                                 addStudy(values)
                             }}
                         >
                         {(formikProps)=>(
-                            <View>
+                            <View style={{width:200, marginTop:20}}>
+                                <Text style={globalStyles.darkText}> Study ID </Text>
                                 <TextInput 
-                                    style= {styles.input}
-                                    placeholder='Study ID'
+                                    style= {globalStyles.input}
                                     onChangeText={formikProps.handleChange('studyID')}
                                     value={formikProps.values.studyID}
                                 ></TextInput>
@@ -110,21 +121,18 @@ export default function ParticipantHome ({navigation}) {
                                 </Button>
                             </View>
                         )}
-                        </Formik>
-                        <Button onPress={()=> setModalOpen(false)}>
-                            <Text> X </Text>
-                        </Button>
+                       </Formik>
                     </View>
                 </Modal>
             </View>
             {/* popup window */}
 
-            <View style={styles.padding}>
+            <View>
                 {noStudiesToShow? noStudies: displayStudies}
             
                 {/* <Text style={globalStyles.lightText}> You don't have any studies yet. </Text> */}
-                <Button style={styles.roundButton} onPress={()=> setModalOpen(true)}>
-                    <Text> + </Text>
+                <Button style={globalStyles.roundButton} onPress={()=> setModalOpen(true)}>
+                    <Text style={{fontSize: 25, fontWeight: 'bold', marginRight: 4}}>+ </Text>
                 </Button>
             </View>
         </View>
@@ -134,42 +142,53 @@ export default function ParticipantHome ({navigation}) {
     
 }
 
+
 const styles = StyleSheet.create({
-    containerRow:{
+    containerList:{
         // display:'flex',
         // marginTop: 20,
         flexDirection: 'row',
-        justifyContent:'space-between',
+        justifyContent:'space-around',
         // height: 10
     },
+    centered:{
+        justifyContent: "center"
+    },
     modal: {
-        backgroundColor: '#b1d9e7',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
+        backgroundColor: '#d6eaf2',
+        // display: 'flex',
+        // flexDirection: 'column',
+        // justifyContent: 'center',
+        alignItems: 'center',
         width: 300,
-        height: 450,
+        height: 350,
         padding: 30,
         borderRadius: 10,
-        marginTop: 100,
-        marginLeft: 60
-    },
-    input: {
-        backgroundColor: 'white',
-        borderBottomColor: 'black',
-        color: 'black',
-        height: 40,
-        fontSize: 15,
-        margin: 10
-    },
-    roundButton: {
-        width: 45,
-        borderRadius: 30
+        // marginTop: 200,
+        marginLeft: 40,
+        borderColor: '#9fa7cc',
+        borderWidth: 2
     },
     sheet: {
         height: 200
     },
     body: {
         padding: 10
+    },
+    card: {
+        width: 320,
+        backgroundColor: 'rgba(177,217,231, 0.4)',
+        borderRadius: 4,
+        margin: 7
+    },
+    modalHeader: {
+        color: '#00253e',
+        fontSize: 20,
+        marginBottom: 50
+        
+    },
+    noStudiesText: {
+        color: '#17547d',
+        margin: 50
     }
 })

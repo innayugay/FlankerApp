@@ -47,34 +47,34 @@ export default function ParticipantStudyDetails({navigation}){
     const testTaken = 
         <Text style={styles.testTaken}> You have already taken the test for this study. Thank you! </Text>
     return (
-    <View style={globalStyles.containerTop}>
+    <View style={globalStyles.screen}>
         <View style={globalStyles.header}> 
             <Text style={globalStyles.headerText}>{navigation.getParam('title')}</Text>
         </View>
-        <View style={styles.properties}>
-            <View style={{flexDirection: 'row'}}>
-                <Text style={globalStyles.lightText}> Study ID: </Text>
+        <View style={globalStyles.insideContainer}>
+            <View style={{flexDirection: 'row', maxWidth: 250,  marginBottom: 8}}>
+                <Text style={globalStyles.lightText}>Study ID: </Text>
                 <Text style={globalStyles.darkText}> {currentStudyID}</Text>
             </View>
-            <View style={{flexDirection: 'row'}}>
-                <Text style={globalStyles.lightText}> Aims: </Text>
+            <View style={{flexDirection: 'row', maxWidth: 250,  marginBottom: 8}}>
+                <Text style={globalStyles.lightText}>Aims: </Text>
                 <Text style={globalStyles.darkText}> {navigation.getParam('aims')}</Text>
             </View>
-            <View  style={{flexDirection: 'row'}}>
-                <Text style={globalStyles.lightText}> Description: </Text>
+            <View  style={{flexDirection: 'row', maxWidth: 250, marginBottom: 8}}>
+                <Text style={globalStyles.lightText}>Description: </Text>
                 <Text style={globalStyles.darkText}> {navigation.getParam('description')}</Text>
             </View>
-            <View  style={{flexDirection: 'row'}}>
-                <Text style={globalStyles.lightText}> Desired participant characteristics: </Text>
+            <View  style={{flexDirection: 'row', maxWidth: 250, marginBottom: 8}}>
+                <Text style={globalStyles.lightText}>Desired participant characteristics: </Text>
                 <Text style={globalStyles.darkText}> {navigation.getParam('participant characteristics')}</Text>
             </View>
             <View style={styles.blueBubble}>
                 <Text style={globalStyles.darkText}> If everything looks right, you can take the task when you are ready.</Text>
                 <Text style={globalStyles.darkText}>Note: you can only take the test once. </Text>
             </View>
-        </View>
-        <View>
-            {alreadyTaken? testTaken : button}
+            <View style={{width: 145, marginLeft:85}}>
+                {alreadyTaken? testTaken : button}
+            </View>
         </View>
 
     </View>
@@ -86,7 +86,6 @@ const styles = StyleSheet.create({
     properties: {
         flexDirection: 'column',
         margin: 30
-
     },
     blueBubble: {
         width: 300,

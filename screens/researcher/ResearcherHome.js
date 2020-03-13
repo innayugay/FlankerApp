@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Text, Button, Container, Card, CardItem } from 'native-base';
 import { globalStyles } from '../../styles/global'
-import { StyleSheet, View, Modal, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, TouchableOpacity } from 'react-native';
+import Modal from "react-native-modal";
 import { TextInput, FlatList } from 'react-native-gesture-handler';
 import * as firebase from 'firebase';
 import { Formik } from 'formik';
@@ -24,24 +25,26 @@ export default function ResearcherHome ({navigation}) {
             title: '',
             aims: '',
             description: '',
-            studyID:''
+            studyID:'',
+            participantCharacteristics: ''
         })
         .then ( function(docRef) {
             console.log(docRef.id, 'this is docref id!!!')
             db.collection('researchers').doc(uid).update({
                 studies: firebase.firestore.FieldValue.arrayUnion(docRef.id)
             })
-            db.collection('studies').doc(docRef.id).set({
+            db.collection('studies').doc(docRef.id).update({
                 researcher: uid,
                 title: values.title,
                 aims: values.aims,
                 description: values.description,
+                participantCharacteristics: values.characteristics,
                 studyID: docRef.id
             })
+            .then(
+                setToggleRender(!toggleRender)
+            )
         })
-        // .then(
-        setToggleRender(!toggleRender)
-        // )
 
     }
 
@@ -81,10 +84,10 @@ export default function ResearcherHome ({navigation}) {
     
     console.log(noStudiesToShow, '???')
     const noStudies = 
-        <Text style={globalStyles.lightText}> You don't have any studies yet. </Text>
+        <Text style={styles.noStudiesText}> You don't have any studies yet. </Text>
 
     const displayStudies = 
-        <View style={{marginTop: 20, padding: 8}}>
+        <View style={{marginTop: 20, padding: 8, maxHeight: 650}}>
             <Text style={globalStyles.regularText}> All studies ({studies.length})</Text>
             <FlatList data={studies} style={{marginTop:20}} renderItem={({ item }) => (
                 <View style={styles.containerList}>
@@ -110,7 +113,7 @@ export default function ResearcherHome ({navigation}) {
 
             {/* popup window */}
             <View>
-                <Modal visible={modalOpen} animationType='slide' transparent={true}>
+                <Modal isVisible={modalOpen} animationType='slide'>
                     <View style={styles.modal}>
                         <View style={styles.containerList}>
                             <Text style={globalStyles.darkText}> Create a new study</Text>
@@ -119,7 +122,7 @@ export default function ResearcherHome ({navigation}) {
                             </Button>
                         </View>
                         <Formik
-                            initialValues={{title:'', aims:'', description:''}}
+                            initialValues={{title:'', aims:'', description:'', characteristics:''}}
                             onSubmit={(values) => {
                                 addStudy(values)
                             }}
@@ -134,7 +137,8 @@ export default function ResearcherHome ({navigation}) {
                                 ></TextInput>
                                 <Text style={globalStyles.darkText}> Aims </Text>
                                 <TextInput 
-                                    style= {globalStyles.input}                                    onChangeText={formikProps.handleChange('aims')}
+                                    style= {globalStyles.input}                                    
+                                    onChangeText={formikProps.handleChange('aims')}
                                     value={formikProps.values.aims}
                                 ></TextInput>
                                 <Text style={globalStyles.darkText}> Description </Text>
@@ -142,6 +146,12 @@ export default function ResearcherHome ({navigation}) {
                                     style= {globalStyles.input}
                                     onChangeText={formikProps.handleChange('description')}
                                     value={formikProps.values.description}
+                                ></TextInput>
+                                <Text style={globalStyles.darkText}> Desired participant characteristics </Text>
+                                <TextInput 
+                                    style= {globalStyles.input}                                    
+                                    onChangeText={formikProps.handleChange('characteristics')}
+                                    value={formikProps.values.characteristics}
                                 ></TextInput>
                                 <Button style={globalStyles.button} title='Submit' onPress={formikProps.handleSubmit}>
                                     <Text> Submit </Text>
@@ -187,11 +197,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         width: 300,
-        height: 450,
+        // height: 450,
         padding: 30,
         borderRadius: 10,
-        marginTop: 100,
-        marginLeft: 60
+        marginLeft: 40
     },
     input: {
         backgroundColor: 'white',
@@ -212,5 +221,9 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(177,217,231, 0.4)',
         borderRadius: 4,
         margin: 7
+    },
+    noStudiesText: {
+        color: '#17547d',
+        margin: 50
     }
 })

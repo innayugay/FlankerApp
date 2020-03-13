@@ -8,25 +8,25 @@ export default function ResearcherStudyDetails({navigation}){
 
     var currentStudyID = navigation.getParam('studyID')
     return (
-    <View style={globalStyles.containerTop}>
+    <View style={globalStyles.screen}>
         <View style={globalStyles.header}> 
             <Text style={globalStyles.headerText}>{navigation.getParam('title')}</Text>
         </View>
-        <View style={styles.properties}>
-            <View style={{flexDirection: 'row'}}>
-                <Text style={globalStyles.lightText}> Study ID: </Text>
+        <View style={globalStyles.insideContainer}>
+            <View style={{flexDirection: 'row', maxWidth: 250, marginBottom: 8}}>
+                <Text style={globalStyles.lightText}>Study ID: </Text>
                 <Text style={globalStyles.darkText}> {currentStudyID}</Text>
             </View>
-            <View style={{flexDirection: 'row'}}>
-                <Text style={globalStyles.lightText}> Aims: </Text>
+            <View style={{flexDirection: 'row', maxWidth: 250, justifyContent:'space-between', marginBottom: 8}}>
+                <Text style={globalStyles.lightText}>Aims: </Text>
                 <Text style={globalStyles.darkText}> {navigation.getParam('aims')}</Text>
             </View>
-            <View  style={{flexDirection: 'row'}}>
-                <Text style={globalStyles.lightText}> Description: </Text>
+            <View  style={{flexDirection: 'row', maxWidth: 250, justifyContent:'space-between', marginBottom: 8}}>
+                <Text style={globalStyles.lightText}>Description: </Text>
                 <Text style={globalStyles.darkText}> {navigation.getParam('description')}</Text>
             </View>
-            <View  style={{flexDirection: 'row'}}>
-                <Text style={globalStyles.lightText}> Desired participant characteristics: </Text>
+            <View  style={{flexDirection: 'row', maxWidth: 250, justifyContent:'space-between', marginBottom: 8}}>
+                <Text style={globalStyles.lightText}>Desired participant characteristics: </Text>
                 <Text style={globalStyles.darkText}> {navigation.getParam('participant characteristics')}</Text>
             </View>
             <View style={styles.blueBubble}>

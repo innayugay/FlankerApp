@@ -154,7 +154,7 @@ export default function FlankerTask ({navigation}) {
 
             var incongruentRT = Math.round(((incongruentTime.reduce((a, b) => a + b, 0) * 10)/incongruentCorrect*100)/100)
 
-            var globalRT = congruentRT + incongruentRT
+            var globalRT = (incongruentTime.reduce((a, b) => a + b, 0) * 10) + (congruentTime.reduce((a, b) => a + b, 0) * 10)
             // var sumOfTotalTime = totalTime.reduce((a, b) => a + b, 0)
             console.log('your total time is', globalRT)
             navigation.navigate('Questionnaire', {globalRT: globalRT, incongruentRT: incongruentRT, congruentRT: congruentRT, entryID: entryID})

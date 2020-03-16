@@ -52,27 +52,29 @@ export default function ParticipantStudyDetails({navigation}){
             <Text style={globalStyles.headerText}>{navigation.getParam('title')}</Text>
         </View>
         <View style={globalStyles.insideContainer}>
-            <View style={{flexDirection: 'row', maxWidth: 250,  marginBottom: 8}}>
-                <Text style={globalStyles.lightText}>Study ID: </Text>
-                <Text style={globalStyles.darkText}> {currentStudyID}</Text>
-            </View>
-            <View style={{flexDirection: 'row', maxWidth: 250,  marginBottom: 8}}>
-                <Text style={globalStyles.lightText}>Aims: </Text>
-                <Text style={globalStyles.darkText}> {navigation.getParam('aims')}</Text>
-            </View>
-            <View  style={{flexDirection: 'row', maxWidth: 250, marginBottom: 8}}>
-                <Text style={globalStyles.lightText}>Description: </Text>
-                <Text style={globalStyles.darkText}> {navigation.getParam('description')}</Text>
-            </View>
-            <View  style={{flexDirection: 'row', maxWidth: 250, marginBottom: 8}}>
-                <Text style={globalStyles.lightText}>Desired participant characteristics: </Text>
-                <Text style={globalStyles.darkText}> {navigation.getParam('participant characteristics')}</Text>
+            <View>
+                <View style={{flexDirection: 'row', maxWidth: 250,  marginBottom: 8}}>
+                    <Text style={globalStyles.lightText}>Study ID: </Text>
+                    <Text style={globalStyles.darkText}> {currentStudyID}</Text>
+                </View>
+                <View style={{flexDirection: 'row', maxWidth: 250,  marginBottom: 8}}>
+                    <Text style={globalStyles.lightText}>Aims: </Text>
+                    <Text style={globalStyles.darkText}> {navigation.getParam('aims')}</Text>
+                </View>
+                <View  style={{flexDirection: 'row', maxWidth: 250, marginBottom: 8}}>
+                    <Text style={globalStyles.lightText}>Description: </Text>
+                    <Text style={globalStyles.darkText}> {navigation.getParam('description')}</Text>
+                </View>
+                <View  style={{flexDirection: 'row', maxWidth: 250, marginBottom: 8}}>
+                    <Text style={globalStyles.lightText}>Desired participant characteristics: </Text>
+                    <Text style={globalStyles.darkText}> {navigation.getParam('participant characteristics')}</Text>
+                </View>
             </View>
             <View style={styles.blueBubble}>
                 <Text style={globalStyles.darkText}> If everything looks right, you can take the task when you are ready.</Text>
                 <Text style={globalStyles.darkText}>Note: you can only take the test once. </Text>
             </View>
-            <View style={{width: 145, marginLeft:85}}>
+            <View style={{width: 145, marginTop:40}}>
                 {alreadyTaken? testTaken : button}
             </View>
         </View>
@@ -96,7 +98,7 @@ const styles = StyleSheet.create({
         opacity: 0.87,
         padding: 20,
         borderRadius: 7,
-        margin: 20
+        marginTop: 20
     },
 
     testTaken:{

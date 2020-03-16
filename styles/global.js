@@ -11,11 +11,12 @@ export const globalStyles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: "center",
         // flex: 1,
-        backgroundColor:'white'
+        backgroundColor:'white',
+        margin: 15
     },
     insideContainer: {
         display: 'flex',
-        // flexDirection: 'row',
+        flexDirection: 'column',
         // alignItems: 'center',
         justifyContent: "center",
         // flex: 1,

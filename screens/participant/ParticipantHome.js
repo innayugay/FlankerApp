@@ -73,9 +73,9 @@ export default function ParticipantHome ({navigation}) {
             <FlatList data={studies} style={{marginTop:20}} renderItem={({ item }) => (
                 <View style={styles.containerList}>
                     {/* <Card style={styles.card}> */}
-                        <CardItem style={styles.card}>
-                            <Text style={globalStyles.regularText}>{ item.title }</Text>
-                        </CardItem>
+                    <CardItem style={styles.card}>
+                        <Text style={globalStyles.regularText}>{ item.title }</Text>
+                    </CardItem>
                     {/* </Card> */}
                     <Button onPress={ ()=> navigation.navigate('StudyDetails', item)} style={globalStyles.button}>
                         <Text style={globalStyles.buttonText}>View </Text>
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
         padding: 30,
         borderRadius: 10,
         // marginTop: 200,
-        marginLeft: 40,
+        marginLeft: 20,
         borderColor: '#9fa7cc',
         borderWidth: 2
     },
@@ -176,7 +176,7 @@ const styles = StyleSheet.create({
         padding: 10
     },
     card: {
-        width: 320,
+        width: 280,
         backgroundColor: 'rgba(177,217,231, 0.4)',
         borderRadius: 4,
         margin: 7

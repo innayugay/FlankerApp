@@ -5,7 +5,18 @@ import { globalStyles } from '../../styles/global';
 import * as firebase from 'firebase';
 import SelectMultiple from 'react-native-select-multiple';
 
-const languages = ['English', 'Russian', 'French', 'German', 'Spanish', 'Polish', 'Chinese', 'Korean', 'Greek']
+const languages = ['English', 'Afrikaans', 'Albanian', 'Amharic', 'Armenian', 'Basque',
+                'Bengali', 'Byelorussian', 'Burmese','Bulgarian', 'Catalan', 'Czech',
+                'Chinese','Croatian', 'Danish','Dari','Dzongkha','Dutch', 'Esperanto',
+                'Estonian', 'Faroese','Farsi','Finnish','French', 'Gaelic','Galician',
+                'German','Greek', 'Hebrew','Hindi','Hungarian', 'Icelandic','Indonesian',
+                'Inuktitut (Eskimo)','Italian', 'Japanese', 'Kazakh','Khmer','Korean','Kurdish',
+                'Laotian', 'Latvian', 'Lappish', 'Lithuanian', 'Latvian','Lappish','Lithuanian',
+                'Macedonian','Malay','Maltese', 'Nepali','Norwegian', 'Pashto','Polish','Portuguese',
+                'Romanian', 'Russian', 'Scots','Serbian','Slovak','Slovenian','Somali','Spanish', 
+                'Swedish','Swahili', 'Polish', 'Tagalog-Filipino','Tajik','Tamil','Thai','Tibetan',
+                'Tigrinya','Tongan','Turkish','Turkmen', 'Ukrainian', 'Urdu',
+                'Uzbek', 'Vietnamese', 'Welsh']
 
 export default class Questionnaire extends React.Component {
 
@@ -77,7 +88,7 @@ export default class Questionnaire extends React.Component {
                                 iosIcon= {<Icon name="arrow-down" />}
                                 // style={{ width: undefined }}
                                 placeholder="Gender"
-                                placeholderStyle={{ color: "#bfc6ea" }}
+                                placeholderStyle={{ color: "#aeafb0" }}
                                 placeholderIconColor="#007aff"
                                 selectedValue={this.state.gender}
                                 onValueChange={gender=> this.setState({gender})}
@@ -98,7 +109,7 @@ export default class Questionnaire extends React.Component {
                             </TextInput>
                         </Item>
                         <Item style={styles.item}>
-                            <Text style={styles.labels}>Languages spoken:</Text>
+                            <Text style={styles.labels}>Languages spoken fluently:</Text>
                             <SelectMultiple
                                 style={styles.selector}
                                 items={languages}
@@ -133,17 +144,18 @@ const styles = StyleSheet.create({
     infoBoxText: {
         color: 'white',
         fontSize: 14,
-        textAlign: "center"
+        textAlign: "center",
     },
     input: {
-        backgroundColor: 'lightgrey',
+        backgroundColor: '#e4e6eb',
         color: 'black',
         height: 40,
         fontSize: 15,
-        width: 150
+        width: 150,
+        padding: 10
     },
     form: {
-        paddingBottom: 100
+        marginBottom: 30
     },
     selector:{
         padding: 10,
@@ -154,9 +166,11 @@ const styles = StyleSheet.create({
     item: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        padding: 30
+        paddingHorizontal: 100,
+        paddingVertical: 20
     },
     labels:{
-        margin: 10
+        margin: 10,
+        maxWidth: 100
     }
 })

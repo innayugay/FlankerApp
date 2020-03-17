@@ -71,8 +71,8 @@ export default function ParticipantStudyDetails({navigation}){
                 </View>
             </View>
             <View style={styles.blueBubble}>
-                <Text style={globalStyles.darkText}> If everything looks right, you can take the task when you are ready.</Text>
-                <Text style={globalStyles.darkText}>Note: you can only take the test once. </Text>
+                <Text style={styles.blueboxText}> If everything looks right, you can take the task when you are ready.</Text>
+                <Text style={styles.blueboxText}>Note: you can only take the test once. </Text>
             </View>
             <View style={{width: 145, marginTop:40}}>
                 {alreadyTaken? testTaken : button}
@@ -108,6 +108,11 @@ const styles = StyleSheet.create({
         color: 'white',
         padding: 20,
         borderRadius: 10
+    },
+    blueboxText:{
+        color: '#17547d',
+        textAlign: 'center',
+        margin: 5
     }
 
 })

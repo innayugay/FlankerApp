@@ -76,7 +76,7 @@ export const globalStyles = StyleSheet.create({
         backgroundColor:'#66bc6b',
         width: 45,
         borderRadius: 45,
-        marginLeft: 180
+        // marginTop: 30
     },
 
 

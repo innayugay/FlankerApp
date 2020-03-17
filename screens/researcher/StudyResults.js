@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, ScrollView } from 'react-native';
 import { Text, Button } from 'native-base';
 import { globalStyles } from '../../styles/global';
 import * as firebase from 'firebase';
-import { Table, Row, Rows } from 'react-native-table-component';
+import { Table, Row, Rows, TableWrapper, Col } from 'react-native-table-component';
 
 
 
@@ -46,47 +46,25 @@ export default function StudyResults({navigation}) {
                 }
             }
         })
-        // .then(()=>{
-        //     console.log('moving on')
-
-
-        // })
-        
-        //convert to array
-        // var tableData = []
-        console.log('ummmmm')
-        // for (var i =0; i<results.length; i++) {
-
-        //     // setTableData(tableData=>[...tableData, Object.values(results[i])])
-        //     // tableData.push(Object.values(results[i]))
-        //     console.log(results[i], '=====================')
-        // }
-        // var rowData = Object.values(results)
     },[reload])
-    
-    // function formatResults(){
-        
-    //     for (var i =0; i<results.length; i++) {
-    //         setTableData(tableData=>[...tableData, Object.values(results[i])])
-    //         // tableData.push(Object.values(results[i]))
-    //         console.log(tableData, '=====================')
-    //     }
-    // }
-
 
     console.log('results are ', results)
     return(
-        // <View>
-        //     <Text> Results: </Text>
-
-            <View style={styles.container}>
-                 <Text> Results: </Text>
-                <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
-                    <Row data={tableHead} style={styles.head} textStyle={styles.text}/>
-                    <Rows data={tableData} textStyle={styles.text}/>
-                </Table>
+        <View style={globalStyles.screen}>
+            <View style={globalStyles.header}>
+                <Text style={globalStyles.headerText}> Results: </Text>
             </View>
-        // </View>
+
+            <ScrollView horizontal={true} style={styles.container}>
+                <Table borderStyle={{borderWidth: 2, borderColor: '#c8e1ff'}}>
+                    <Row data={tableHead} widthArr={[80, 150, 150, 100, 150, 300]} style={styles.head} textStyle={styles.text}/>
+                    <TableWrapper style={styles.wrapper}>
+                        <Col style={styles.title} heightArr={[28,28]} textStyle={styles.text}/>
+                        <Rows data={tableData} widthArr={[80, 150, 150, 100, 150, 300]} textStyle={styles.text}/>
+                    </TableWrapper>
+                </Table>
+            </ScrollView>
+        </View>
     )
 }
 
@@ -103,5 +81,9 @@ const styles = StyleSheet.create({
     },
     text: { 
         margin: 6 
-    }
+    },
+    wrapper: {
+        flexDirection: 'row'
+    },
+    title: { flex: 1, backgroundColor: '#f6f8fa' },
 });

@@ -42,6 +42,7 @@ export default function ResearcherHome ({navigation}) {
                 studyID: docRef.id
             })
             .then(
+                setModalOpen(false),
                 setToggleRender(!toggleRender)
             )
         })
@@ -87,7 +88,7 @@ export default function ResearcherHome ({navigation}) {
         <Text style={styles.noStudiesText}> You don't have any studies yet. </Text>
 
     const displayStudies = 
-        <View style={{marginTop: 20, padding: 8, maxHeight: 650}}>
+        <View style={{marginTop: 20, padding: 8, maxHeight: 450}}>
             <Text style={globalStyles.regularText}> All studies ({studies.length})</Text>
             <FlatList data={studies} style={{marginTop:20}} renderItem={({ item }) => (
                 <View style={styles.containerList}>
@@ -164,12 +165,12 @@ export default function ResearcherHome ({navigation}) {
             </View>
             {/* popup window */}
 
-            <View>
+            <View style={globalStyles.container}>
                 {noStudiesToShow? noStudies: displayStudies}
             
                 {/* <Text style={globalStyles.lightText}> You don't have any studies yet. </Text> */}
                 <Button style={globalStyles.roundButton} onPress={()=> setModalOpen(true)}>
-                    <Text style={{fontSize: 25, fontWeight: 'bold', marginRight: 4}}>+ </Text>
+                    <Text style={{fontSize: 25, fontWeight: 'bold'}}>+ </Text>
                 </Button>
             </View>
         </View>
@@ -217,13 +218,16 @@ const styles = StyleSheet.create({
         padding: 10
     },
     card: {
-        width: 320,
+        width: 280,
         backgroundColor: 'rgba(177,217,231, 0.4)',
         borderRadius: 4,
-        margin: 7
+        margin: 7,
     },
     noStudiesText: {
         color: '#17547d',
-        margin: 50
-    }
+        // margin: 40,
+        textAlign: 'center',
+
+    },
+
 })

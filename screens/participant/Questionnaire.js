@@ -4,6 +4,9 @@ import { Text, Button, Form, Item, Picker, Icon} from 'native-base';
 import { globalStyles } from '../../styles/global';
 import * as firebase from 'firebase';
 import SelectMultiple from 'react-native-select-multiple';
+import { ScrollView } from 'react-native-gesture-handler';
+console.disableYellowBox = true;
+
 
 const languages = ['English', 'Afrikaans', 'Albanian', 'Amharic', 'Armenian', 'Basque',
                 'Bengali', 'Byelorussian', 'Burmese','Bulgarian', 'Catalan', 'Czech',
@@ -72,7 +75,7 @@ export default class Questionnaire extends React.Component {
     render(){
 
         return (
-            <View style={globalStyles.screen}>
+            <ScrollView style={globalStyles.screen}>
                 <View style={globalStyles.header}>
                     <Text style={globalStyles.headerText}> As the final step, please fill out this short questionnaire: </Text>
                 </View>
@@ -125,7 +128,7 @@ export default class Questionnaire extends React.Component {
                     <Text>{this.props.navigation.getParam('incongruentRT')} is incongruent RT</Text> */}
                 </View>
 
-                </View>
+            </ScrollView>
         )
 
     }

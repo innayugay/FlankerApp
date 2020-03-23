@@ -3,6 +3,7 @@ import { StyleSheet, View, ScrollView } from 'react-native';
 import { Text, Button } from 'native-base';
 import { globalStyles } from '../../styles/global';
 import * as firebase from 'firebase';
+console.disableYellowBox = true;
 
 
 export default function ResearcherStudyDetails({navigation}){

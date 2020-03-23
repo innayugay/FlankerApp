@@ -4,6 +4,7 @@ import { Text, Button } from 'native-base';
 import { globalStyles } from '../../styles/global';
 import * as firebase from 'firebase';
 import Swiper from 'react-native-swiper';
+console.disableYellowBox = true;
 
 
 export default function Instructions ({navigation}){

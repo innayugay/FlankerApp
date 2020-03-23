@@ -14,7 +14,7 @@ export default function ThankYou ({navigation}){
             <View style={globalStyles.header}>
                 <Text style={globalStyles.headerText}> Thank you for taking the test! </Text>
             </View>
-            <View style={globalStyles.insideContainer}>
+            <View style={globalStyles.container}>
                 <View style={styles.card}>
                     <Text style={{color: '#00253e', fontSize: 20, marginBottom:20}}> Your results are: </Text>
                     <Text style={styles.line}> Global response time: {navigation.getParam('globalRT')} ms</Text>

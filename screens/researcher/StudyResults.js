@@ -4,6 +4,8 @@ import { Text, Button } from 'native-base';
 import { globalStyles } from '../../styles/global';
 import * as firebase from 'firebase';
 import { Table, Row, Rows, TableWrapper, Col } from 'react-native-table-component';
+console.disableYellowBox = true;
+
 
 
 

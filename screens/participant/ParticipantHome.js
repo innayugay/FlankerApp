@@ -6,6 +6,7 @@ import Modal from "react-native-modal";
 import { TextInput, FlatList } from 'react-native-gesture-handler';
 import * as firebase from 'firebase';
 import { Formik } from 'formik';
+console.disableYellowBox = true;
 
 export default function ParticipantHome ({navigation}) {
 

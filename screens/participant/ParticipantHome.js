@@ -30,6 +30,7 @@ export default function ParticipantHome ({navigation}) {
             })
         )
         .then(
+            setModalOpen(false),
             setToggleRender(!toggleRender)
         )
     }

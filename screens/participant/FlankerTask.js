@@ -124,25 +124,25 @@ export default function FlankerTask ({navigation}) {
             if (trialSequence[0].type === 'congruentRight'){
                 // setIsActive(true)
                 console.log('corrent answer is', trialSequence[0].correctAnswer)
-                setArrows('→   →   →   →   → ')
+                setArrows(' →  →  →  →  → ')
 
             }
             else if (trialSequence[0].type === 'congruentLeft'){
                 // setIsActive(true)
                 console.log('corrent answer is', trialSequence[0].correctAnswer)
-                setArrows('←   ←    ←    ←    ←')
+                setArrows(' ←  ←  ←  ←  ← ')
             }
             else if( trialSequence[0].type === 'incongruentRight'){
                 // setIsActive(true)
 
                 console.log('corrent answer is', trialSequence[0].correctAnswer)
-                setArrows(' ←   ←   →   ←   ←')
+                setArrows(' ←  ←  →  ←  ← ')
             }
             else if( trialSequence[0].type === 'incongruentLeft'){
                 // setIsActive(true)
 
                 console.log('corrent answer is', trialSequence[0].correctAnswer)
-                setArrows('  →    →    ←    →   → ')
+                setArrows(' →  →  ←  →  → ')
             }
             
         }

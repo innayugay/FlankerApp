@@ -75,6 +75,7 @@ export const globalStyles = StyleSheet.create({
     roundButton: {
         backgroundColor:'#66bc6b',
         width: 45,
+        height: 45,
         borderRadius: 45,
         // marginTop: 30
     },

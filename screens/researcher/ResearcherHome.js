@@ -171,7 +171,7 @@ export default function ResearcherHome ({navigation}) {
             
                 {/* <Text style={globalStyles.lightText}> You don't have any studies yet. </Text> */}
                 <Button style={globalStyles.roundButton} onPress={()=> setModalOpen(true)}>
-                    <Text style={{fontSize: 25, fontWeight: 'bold'}}>+ </Text>
+                    <Text style={{fontSize: 25, fontWeight: 'bold'}}>+</Text>
                 </Button>
             </View>
         </View>

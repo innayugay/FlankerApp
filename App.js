@@ -7,6 +7,14 @@ import Navigator from './routes/homeStack'
 import * as firebase from 'firebase';
 import { StyleSheet, Text, View } from 'react-native';
 
+
+// import {decode, encode} from 'base-64';
+
+// if (!global.btoa) {  global.btoa = encode }
+
+// if (!global.atob) { global.atob = decode }
+
+
 const getFonts = () => {
   return Font.loadAsync({
     'roboto-regular': require('./assets/fonts/Roboto-Regular.ttf')

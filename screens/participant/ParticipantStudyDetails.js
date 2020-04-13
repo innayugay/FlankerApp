@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, View } from 'react-native';
+import { StyleSheet, View, Image } from 'react-native';
 import { Text, Button } from 'native-base';
 import { globalStyles } from '../../styles/global';
 import * as firebase from 'firebase';
@@ -48,7 +48,9 @@ export default function ParticipantStudyDetails({navigation}){
         </Button>
 
     const testTaken = 
-        <Text style={styles.testTaken}> You have already taken the test for this study. Thank you! </Text>
+        <View style={styles.testTaken}>  
+            <Text style={styles.testTakenText}> You have already taken the test for this study. Thank you! </Text>
+        </View>
     return (
     <ScrollView style={globalStyles.screen}>
         <View style={globalStyles.header}> 
@@ -58,20 +60,32 @@ export default function ParticipantStudyDetails({navigation}){
             <View style={styles.properties}>
                 <View style={{maxWidth: 350, marginBottom: 10}}>
                     <View style={{ marginBottom: 10}}>
-                        <Text style={globalStyles.lightText}>Study ID: </Text>
-                        <Text style={globalStyles.darkText}> {currentStudyID}</Text>
+                        <View style={{flexDirection: 'row'}}>
+                            <Image style={{width:20, height:20, marginRight:4}} source={require('../../assets/images/bulb.png')}/>
+                            <Text style={globalStyles.lightText}>Study ID: </Text>
+                        </View>
+                        <Text style={globalStyles.darkText}>{currentStudyID}</Text>
                     </View>
                     <View style={{ marginBottom: 10}}>
-                        <Text style={globalStyles.lightText}>Aims: </Text>
-                        <Text style={globalStyles.darkText}> {navigation.getParam('aims')}</Text>
+                        <View style={{flexDirection: 'row'}}>
+                            <Image style={{width:20, height:20, marginRight:4}} source={require('../../assets/images/focus.png')}/>
+                            <Text style={globalStyles.lightText}>Aims: </Text>
+                        </View>
+                        <Text style={globalStyles.darkText}>{navigation.getParam('aims')}</Text>
                     </View>
                     <View  style={{ marginBottom: 10}}>
-                        <Text style={globalStyles.lightText}>Description: </Text>
-                        <Text style={globalStyles.darkText}> {navigation.getParam('description')}</Text>
+                        <View style={{flexDirection: 'row'}}> 
+                            <Image style={{width:20, height:20, marginRight:4}} source={require('../../assets/images/report.png')}/>
+                            <Text style={globalStyles.lightText}>Description: </Text>
+                        </View>
+                        <Text style={globalStyles.darkText}>{navigation.getParam('description')}</Text>
                     </View>
                     <View  style={{ marginBottom: 10}}>
-                        <Text style={globalStyles.lightText}>Desired participant characteristics: </Text>
-                        <Text style={globalStyles.darkText}> {navigation.getParam('participantCharacteristics')}</Text>
+                        <View style={{flexDirection: 'row'}}>
+                            <Image style={{width:20, height:20, marginRight:4}} source={require('../../assets/images/participant.png')}/>
+                            <Text style={globalStyles.lightText}>Desired participant characteristics: </Text>
+                        </View>
+                        <Text style={globalStyles.darkText}>{navigation.getParam('participantCharacteristics')}</Text>
                     </View>
                 </View>
             </View>
@@ -80,7 +94,7 @@ export default function ParticipantStudyDetails({navigation}){
                     <Text style={styles.blueboxText}> If everything looks right, you can take the task when you are ready.</Text>
                     <Text style={styles.blueboxText}>Note: you can only take the test once. </Text>
                 </View>
-                <View style={{width: 145, marginTop:40}}>
+                <View style={{maxWidth:300, marginTop:40}}>
                     {alreadyTaken? testTaken : button}
                 </View>
             </View>
@@ -110,11 +124,13 @@ const styles = StyleSheet.create({
 
     testTaken:{
         // width: 200,
-        textAlign: "center",
         backgroundColor: '#27bbd9',
-        color: 'white',
         padding: 20,
-        borderRadius: 10
+        borderRadius: 7
+    },
+    testTakenText:{
+        textAlign: "center",
+        color: 'white',
     },
     blueboxText:{
         color: '#17547d',
